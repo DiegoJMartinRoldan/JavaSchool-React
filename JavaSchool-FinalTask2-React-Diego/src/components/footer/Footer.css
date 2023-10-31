@@ -1,0 +1,26 @@
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #a8c7e6;
+    color: #161414;
+  }
+  
+  .footer-title {
+    letter-spacing: 2px;
+    color: #fffffe;
+  }
+  
+  .footer-table {
+    color: #111111;
+    border-color: #666;
+  }
+  
+  .footer-bottom {
+    background-color: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  
