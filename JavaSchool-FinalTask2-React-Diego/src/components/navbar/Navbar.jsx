@@ -1,9 +1,24 @@
 import React from "react";
 import './Navbar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { NavLink } from "../NavLink";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 
 function Navbar() {
+
+  // Provisional logout, this logout will be in Profile
+  const navigate = useNavigate();
+  useEffect(() => {
+    // We obtain this sessionStorage when we login and clear it by
+    let username = sessionStorage.getItem('username');
+    if (username === '' || username === null) {
+      navigate('/login');
+    }
+  }, [])
+
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <a className="navbar-brand" href="#">My App</a>
@@ -13,21 +28,22 @@ function Navbar() {
       <div className="collapse navbar-collapse" id="navbarNavDropdown">
         <ul className="navbar-nav">
           <li className="nav-item active">
-            <a className="nav-link" href="#">Home <span className="sr-only"></span></a>
+            <NavLink to='/'>Home</NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">Register</a>
+            <NavLink to='/register'>Register</NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">Login</a>
+            <NavLink to='/login'>Login</NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Profile
-            </a>
+            <NavLink to='/profile'>Profile</NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">Shopping Cart</a>
+            <NavLink to='/shoppingCart'>Shopping Cart</NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to='/login'>Logout</NavLink>
           </li>
         </ul>
       </div>
