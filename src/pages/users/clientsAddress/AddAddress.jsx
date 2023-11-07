@@ -4,6 +4,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../authentication/customHooks/useAuth';
 
 function AddAddress() {
 
@@ -13,7 +14,8 @@ function AddAddress() {
   const [street, setStreet] = useState('');
   const [home, setHome] = useState('');
   const [apartment, setApartment] = useState('');
-  const [client, setClient] = useState('');
+  const { auth } = useAuth();
+
 
   const navigate = useNavigate();
 
@@ -26,41 +28,40 @@ function AddAddress() {
   }
 
   const isValidate = () => {
-
     let isAdded = true;
-    let errorMessage = 'Please enter the value in'
-
-    if (country === null || country === '') {
-      isAdded = false,
-        errorMessage += 'Country'
+    let errorMessage = 'Please enter the value in';
+  
+    if (!country) {
+      isAdded = false;
+      errorMessage += 'Country';
     }
-    if (city === null || city === '') {
-      isAdded = false,
-        errorMessage += 'City'
+    if (!city) {
+      isAdded = false;
+      errorMessage += 'City';
     }
-    if (postalCode === null || postalCode === '') {
-      isAdded = false,
-        errorMessage += 'Postal Code'
+    if (!postalCode) {
+      isAdded = false;
+      errorMessage += 'Postal Code';
     }
-    if (street === null || street === '') {
-      isAdded = false,
-        errorMessage += 'Street'
+    if (!street) {
+      isAdded = false;
+      errorMessage += 'Street';
     }
-    if (home === null || home === '') {
-      isAdded = false,
-        errorMessage += 'Home'
+    if (!home) {
+      isAdded = false;
+      errorMessage += 'Home';
     }
-    if (apartment === null || apartment === '') {
-      isAdded = false,
-        errorMessage += 'Apartment'
+    if (!apartment) {
+      isAdded = false;
+      errorMessage += 'Apartment';
     }
-
+  
     if (!isAdded) {
       toast.warning(errorMessage);
     }
-
-
-  }
+  
+    return isAdded;
+  };
 
 
 
@@ -81,8 +82,13 @@ function AddAddress() {
       street: street,
       home: home,
       apartment: apartment,
-      client: client,
+      client: {
+        id: auth.id 
+      }
+
     }
+    console.log(accessToken);
+    console.log(addressData);
 
     if (isValidate()){
 
@@ -95,6 +101,7 @@ function AddAddress() {
 
           handleSuccess();
           console.log(response);
+  
         })
         .catch((error) => {
           toast.error('Try again.');
