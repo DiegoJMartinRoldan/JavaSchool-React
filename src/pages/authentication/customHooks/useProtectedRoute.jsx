@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Custom App.jsx element
+// Protected Routes
 const useProtectedRoute = ({ element, role }) => {
 
   const isAuthenticated = sessionStorage.getItem('accessToken') !== null;
