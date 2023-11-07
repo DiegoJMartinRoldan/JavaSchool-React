@@ -14,6 +14,9 @@ import Reorder from './pages/users/checkout/Reorder';
 import SingleProductInfo from './pages/users/catalog/SingleProductInfo';
 import ProtectedRoute from './pages/authentication/ProtectedRoute';
 import AddProduct from './pages/employees/AddProduct';
+import Unauthorized from './pages/authentication/Unauthorized';
+
+
 
 export function App() {
   return (
@@ -29,6 +32,7 @@ export function App() {
         <Route path="/passwordChange" element={<PasswordChange />} />
         <Route path="/userInformationChange" element={<UserInformationChange />} />
         <Route path="/reorder" element={<Reorder />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
         <Route
           path="/clientAddress"

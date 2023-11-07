@@ -53,24 +53,29 @@ function Login() {
           // Get the token from the request
           const accessToken = response.data.accessToken;
 
+          const token = response.data.token;
+
           //Get the client.role from the request
           const role = response.data.role;
 
 
           // We save the credentials, the role, and the accessToken in the auth object and then in the context.
-          setAuth({ name, password, accessToken, role: role });
+          setAuth({ name, password, accessToken, token, role: role });
 
           // We are saving the name information in the session (JWT)
           sessionStorage.setItem('username', name);
           sessionStorage.setItem('accessToken', accessToken);
+          sessionStorage.setItem('refreshToken', token);
           sessionStorage.setItem('role', role);
 
           handleLoginSuccess();
 
-          //console.log('accessToken: '+ accessToken);
-          //console.log('role: ' + role);
-          //console.log(Auth); ( import { Auth } from './customHooks/Auth'; )
-          //console.log(sessionStorage);
+          //console.log(response);
+          //console.log(setAuth)
+          console.log('accessToken: '+ accessToken);
+          console.log('refreshToken: ' + token);
+          console.log('role: ' + role);
+          console.log(sessionStorage);
           
 
         })
