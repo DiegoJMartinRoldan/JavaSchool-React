@@ -12,7 +12,8 @@ import UserInformationChange from './pages/users/profile/UserInformationChange';
 import ShoppingCart from './pages/users/checkout/ShoppingCart';
 import Reorder from './pages/users/checkout/Reorder';
 import SingleProductInfo from './pages/users/catalog/SingleProductInfo';
-import useProtectedRoute from './pages/authentication/customHooks/useProtectedRoute';
+import ProtectedRoute from './pages/authentication/ProtectedRoute';
+import AddProduct from './pages/employees/AddProduct';
 
 export function App() {
   return (
@@ -31,12 +32,24 @@ export function App() {
 
         <Route
           path="/clientAddress"
-          element={useProtectedRoute({
-            element: <AddAddress />,
-            role: ["ROLE_USER"],
-          })}
+          element={
+            <ProtectedRoute
+              element={<AddAddress />}
+              role={["ROLE_USER"]}
+            />
+          }
         />
-        
+
+        <Route
+          path="/addProduct"
+          element={
+            <ProtectedRoute
+              element={<AddProduct />}
+              role={["ROLE_ADMIN"]}
+            />
+          }
+        />
+
       </Routes>
     </Layout>
   );
