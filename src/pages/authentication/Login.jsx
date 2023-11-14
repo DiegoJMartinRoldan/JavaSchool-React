@@ -11,10 +11,11 @@ import Context from './customHooks/Auth';
 
 
 
+
 function Login() {
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setAuth } = useAuth(Context);
+  const { auth, updateAuth } = useAuth(Context);
 
   // Where are we going
   const navigate = useNavigate();
@@ -32,62 +33,63 @@ function Login() {
     }, 1000);
   };
 
+  
 
   // Login Submit (Token) 
-  const handleSubmitByToken = (event) => {
+  const handleSubmitByToken = async (event) => {
     event.preventDefault();
-
+  
     if (loginIsValidate()) {
+      try {
+        const loginEndpoint = 'http://localhost:8080/client/login';
+  
+        const loginData = {
+          email: email,
+          password: password,
+        };
+  
+        const response = await axios.post(loginEndpoint, loginData);
+  
+        // Get the token from the request
+        const accessToken = response.data.accessToken;
+        const token = response.data.token;
+  
+        // Get the client.role from the request
+        const role = response.data.role;
+        const id = response.data.id;
+  
+        // Save the credentials, the role, and the accessToken in the auth object and then in the context.
+        updateAuth({ email, password, accessToken, token, role, id });
+  
+        // Save the name information in the session (JWT)
+        localStorage.setItem('email', email);
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', token);
+        localStorage.setItem('id', id);
+        localStorage.setItem('role', role);
+  
+        handleLoginSuccess();
+  
+        console.log('accessToken: ' + accessToken);
+        console.log('refreshToken: ' + token);
+        console.log('role: ' + role);
+        console.log('id: ' + id);
+        console.log(localStorage);
+        console.log(auth);
+  
+      } catch (error) {
+        if (error.response && error.response.status === 403) {
 
-      const loginEndpoint = 'http://localhost:8080/client/login';
-
-      const loginData = {
-        name: name,
-        password: password,
-      };
-
-      axios
-        .post(loginEndpoint, loginData)
-        .then((response) => {
-
-          // Get the token from the request
-          const accessToken = response.data.accessToken;
-
-          const token = response.data.token;
-
-          //Get the client.role from the request
-          const role = response.data.role;
-          const id = response.data.id;
-
-
-          // We save the credentials, the role, and the accessToken in the auth object and then in the context.
-          setAuth({ name, password, accessToken, token, role: role, id });
-
-          // We are saving the name information in the session (JWT)
-          sessionStorage.setItem('username', name);
-          sessionStorage.setItem('accessToken', accessToken);
-          sessionStorage.setItem('refreshToken', token);
-          sessionStorage.setItem('id', id);
-          sessionStorage.setItem('role', role);
-
-          handleLoginSuccess();
-
-          //console.log(response);
-          //console.log(setAuth)
-          console.log('accessToken: '+ accessToken);
-          console.log('refreshToken: ' + token);
-          console.log('role: ' + role);
-          console.log('id: ' + id)
-          console.log(sessionStorage);
-          
-
-        })
-        .catch((error) => {
+          await handleSubmitByToken(event);
+        } else {
           toast.error('Invalid username or password, try again');
           console.log(error);
-        });
+        }
+      }
     }
   };
+
+  
 
   // Login validation
   const loginIsValidate = () => {
@@ -95,13 +97,13 @@ function Login() {
     let isCorrect = true;
     let errorMessage = 'Enter ';
 
-    if (name === '' || name === null) {
+    if (email === '' || email === null) {
       isCorrect = false;
-      errorMessage += 'Name or Email';
+      errorMessage += 'valid email';
     }
     if (password === '' || password === null) {
       isCorrect = false;
-      errorMessage += 'Password';
+      errorMessage += 'password';
     }
 
     if (!isCorrect) {
@@ -112,59 +114,52 @@ function Login() {
 
 
 
-  // Here we clear the sessionStorage when the user logs out
-  useEffect(() => {
-    sessionStorage.clear();
-  }, []);
 
-
-
-
-  return (
-    <div className="container mt-5">
-      <ToastContainer />
-      <div className="row">
-        <div className="col-sm-6 text-black">
-          <div className="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-            <form onSubmit={handleSubmitByToken}>
-              <h3 className="fw-normal mb-3 pb-3">Log in</h3>
-              <div className="form outline mb-4">
-                <input
-                  type="text"
-                  placeholder="Username"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="form outline mb-4">
-                <input
-                  type="password"
-                  placeholder="Password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <div className="pt-1 mb-4">
-                <button className="btn btn-primary btn-md btn-block" type="submit">
-                  Login
-                </button>
-              </div>
-              <p className="small mb pb-lg-2">
-                <NavLink to="/forgot-password" className="link-info">
-                  Forgot Password?
-                </NavLink>
-              </p>
-              <p>
-                Don't have an account yet? <NavLink to="/register">Register</NavLink>
-              </p>
-            </form>
+    return (
+      <div className="container mt-5">
+        <ToastContainer />
+        <div className="row">
+          <div className="col-sm-6 text-black">
+            <div className="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
+              <form onSubmit={handleSubmitByToken}>
+                <h3 className="fw-normal mb-3 pb-3">Log in</h3>
+                <div className="form outline mb-4">
+                  <input
+                    type="text"
+                    placeholder="Email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="form outline mb-4">
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div className="pt-1 mb-4">
+                  <button className="btn btn-primary btn-md btn-block" type="submit">
+                    Login
+                  </button>
+                </div>
+                <p className="small mb pb-lg-2">
+                  <NavLink to="/forgot-password" className="link-info">
+                    Forgot Password?
+                  </NavLink>
+                </p>
+                <p>
+                  Don't have an account yet? <NavLink to="/register">Register</NavLink>
+                </p>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-export default Login;
+  export default Login;

@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../authentication/customHooks/useAuth';
 
+
 function AddAddress() {
 
   const [country, setCountry] = useState('');
@@ -71,7 +72,7 @@ function AddAddress() {
     event.preventDefault();
 
     //Initialize an empty variable for the token
-    let accessToken = sessionStorage.getItem('accessToken');
+    let accessToken = localStorage.getItem('accessToken');
 
     const endpoint = 'http://localhost:8080/clientsAddress/create'
 

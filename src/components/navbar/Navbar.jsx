@@ -1,22 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import './Navbar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavLink } from "../NavLink";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import useAuth from "../../pages/authentication/customHooks/useAuth";
+import Context from "../../pages/authentication/customHooks/Auth";
+
+
+
+
+
 
 
 function Navbar() {
 
-  // Provisional logout, this logout will be in Profile
-  const navigate = useNavigate();
-  useEffect(() => {
-    // We obtain this sessionStorage when we login and clear it by
-    let username = sessionStorage.getItem('username');
-    if (username === '' || username === null) {
-      navigate('/login');
-    }
-  }, [])
+  const { auth } = useContext(Context);
+  console.log('Auth state:', auth);
 
 
   return (
@@ -30,21 +28,28 @@ function Navbar() {
           <li className="nav-item active">
             <NavLink to='/'>Home</NavLink>
           </li>
+          {!auth.accessToken && (
+            <>
+              <li className="nav-item">
+                <NavLink to='/register'>Register</NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to='/login'>Login</NavLink>
+              </li>
+            </>
+          )}
+          {auth.accessToken && (
+            <>
+              <li className="nav-item">
+                <NavLink to='/profile'>Profile</NavLink>
+              </li>
+            </>
+          )}
+          
           <li className="nav-item">
-            <NavLink to='/register'>Register</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to='/login'>Login</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to='/profile'>Profile</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to='/shoppingCart'>Shopping Cart</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to='/login'>Logout</NavLink>
-          </li>
+                <NavLink to='/shoppingCart'>Shopping Cart</NavLink>
+              </li>
+
         </ul>
       </div>
     </nav>

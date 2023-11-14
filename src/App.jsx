@@ -6,39 +6,51 @@ import ProductList from './pages/users/catalog/ProductList';
 import UserRegister from './pages/authentication/Register';
 import Login from './pages/authentication/Login';
 import AddAddress from './pages/users/clientsAddress/AddAddress';
-import UserProfile from './pages/users/profile/UserProfile';
-import PasswordChange from './pages/users/profile/PasswordChange';
-import UserInformationChange from './pages/users/profile/UserInformationChange';
 import ShoppingCart from './pages/users/checkout/ShoppingCart';
-import Reorder from './pages/users/checkout/Reorder';
+import Reorder from './pages/users/profile/orderHistory/Reorder';
 import SingleProductInfo from './pages/users/catalog/SingleProductInfo';
 import ProtectedRoute from './pages/authentication/ProtectedRoute';
 import AddProduct from './pages/employees/AddProduct';
 import Unauthorized from './pages/authentication/Unauthorized';
 
-
+import OrderHistory from './pages/users/profile/orderHistory/OrderHistory';
+import PasswordChange from './pages/users/profile/PasswordChange';
+import UserInformationChange from './pages/users/profile/UserInformationChange';
+import UserProfile from './pages/users/profile/UserProfile';
+import UpdateAddress from './pages/users/clientsAddress/UpdateAddress';
 
 export function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path='/' element={<Home></Home>} />
         <Route path="/catalog" element={<ProductList />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/login" element={<Login />} />
         <Route path="/shoppingCart" element={<ShoppingCart />} />
         <Route path="/singleProductInfo/:id" element={<SingleProductInfo />} />
-        <Route path="/profile" element={<UserProfile />} />
         <Route path="/passwordChange" element={<PasswordChange />} />
-        <Route path="/userInformationChange" element={<UserInformationChange />} />
         <Route path="/reorder" element={<Reorder />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/updateAddress" element={<UpdateAddress />} />
+
+        <Route path="/clientAddress" element={<AddAddress />} />
 
         <Route
-          path="/clientAddress"
+          path="/profile"
           element={
             <ProtectedRoute
-              element={<AddAddress />}
+              element={<UserProfile />}
+              role={["ROLE_USER"]}
+            />
+          }
+        />
+
+        <Route
+          path="/userInformationChange/:id"
+          element={
+            <ProtectedRoute
+              element={<UserInformationChange />}
               role={["ROLE_USER"]}
             />
           }
@@ -54,6 +66,15 @@ export function App() {
           }
         />
 
+        <Route
+          path="/orderHistory"
+          element={
+            <ProtectedRoute
+              element={<OrderHistory />}
+              role={["ROLE_USER", "ROLE_ADMIN"]}
+            />
+          }
+        />
       </Routes>
     </Layout>
   );

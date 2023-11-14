@@ -36,23 +36,23 @@ function Register() {
 
     if (name === null || name === '') {
       isProceed = false;
-      errormessage += 'Name'
+      errormessage += 'Name '
     }
     if (surname === null || surname === '') {
       isProceed = false;
-      errormessage += 'Surname'
+      errormessage += 'Surname '
     }
     if (dateOfBirth === null || dateOfBirth === '') {
       isProceed = false;
-      errormessage += 'Date Of Birth'
+      errormessage += 'Date Of Birth '
     }
     if (email === null || email === '') {
       isProceed = false;
-      errormessage += 'Email'
+      errormessage += 'Email '
     }
     if (password === null || password === '') {
       isProceed = false;
-      errormessage += 'Password'
+      errormessage += 'Password '
     }
 
     // If any field is empty, display a warning toast with the error message

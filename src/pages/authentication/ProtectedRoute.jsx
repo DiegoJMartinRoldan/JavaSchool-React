@@ -2,18 +2,19 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
 const ProtectedRoute = ({ element, role }) => {
     const navigate = useNavigate();
 
-    // Check if the user is authenticated and get the user's role from the session storage
-    const isAuthenticated = sessionStorage.getItem('accessToken') !== null;
-    const userRole = sessionStorage.getItem('role');
+    // Check if the user is authenticated and get the user's role from the local storage
+    const isAuthenticated = localStorage.getItem('accessToken') !== null;
+    const userRole = localStorage.getItem('role');
 
     // Function to get a new access token using the refresh token
-    const getNewAccessToken = async (refreshToken) => {
+    const getNewAccessToken = async (token) => {
         const endpoint = 'http://localhost:8080/client/refreshToken';
         try {
-            const response = await axios.post(endpoint, { refreshToken });
+            const response = await axios.post(endpoint, { token });
             const newAccessToken = response.data.accessToken; 
             console.log(newAccessToken)
             return newAccessToken;
@@ -29,21 +30,20 @@ const ProtectedRoute = ({ element, role }) => {
 
         const checkAuthentication = async () => {
 
-            const accessToken = sessionStorage.getItem('accessToken');
+            const accessToken = localStorage.getItem('accessToken');
 
             // If there is no access token, attempt to get a new one using the refresh token
             if (!accessToken) {
-                const refreshToken = sessionStorage.getItem('refreshToken');
+                const refreshToken = localStorage.getItem('refreshToken');  // Corrected line
                 const newAccessToken = await getNewAccessToken(refreshToken);
-                sessionStorage.setItem('accessToken', newAccessToken);
+                localStorage.setItem('accessToken', newAccessToken);
 
                 console.log(newAccessToken);
             }
 
             // Check if the user is authenticated and if their role has the necessary permissions
-            if (!accessToken || !role.includes(userRole)) {
+            if (!accessToken) {
                 navigate("/login"); 
-
             } else if (!role.includes(userRole)) {
                 navigate("/unauthorized"); 
             }
