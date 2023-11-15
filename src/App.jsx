@@ -30,7 +30,7 @@ export function App() {
         <Route path="/shoppingCart" element={<ShoppingCart />} />
         <Route path="/singleProductInfo/:id" element={<SingleProductInfo />} />
         <Route path="/passwordChange" element={<PasswordChange />} />
-        <Route path="/reorder" element={<Reorder />} />
+        <Route path="/reorder/:id" element={<Reorder />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/updateAddress" element={<UpdateAddress />} />
 

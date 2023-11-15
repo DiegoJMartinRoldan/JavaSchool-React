@@ -6,11 +6,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
 import useAuth from '../../authentication/customHooks/useAuth';
 import Context from '../../authentication/customHooks/Auth';
+import customAxios from '../../authentication/customHooks/customAxios';
 
 
 
 
-function UserInformationChange({ handleClientUpdate }) {
+function UserInformationChange({
+  handleClientUpdate,
+  setUpdateTrigger,
+  onUpdate,
+  onUpdateAfterNavigation,
+}) {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -76,13 +82,22 @@ function UserInformationChange({ handleClientUpdate }) {
   }
 
   const handleUpdate = (updatedClient) => {
+    console.log('handleUpdate called');
     if (handleClientUpdate) {
       handleClientUpdate(updatedClient);
+      setUpdateTrigger((prevState) => !prevState);
       console.log('Client state updated:', updatedClient);
     }
     handleSuccess();
+    // Llama a la función de callback proporcionada en las props
+    if (onUpdate) {
+      onUpdate(updatedClient);
+    }
+    // Llama a la función de actualización después de la navegación
+    if (onUpdateAfterNavigation) {
+      onUpdateAfterNavigation(updatedClient);
+    }
   };
-
 
 
   // Function to handle form submission
@@ -104,17 +119,17 @@ function UserInformationChange({ handleClientUpdate }) {
     // Perform validation before sending the request
     if (IsValidate()) {
       // Api Url
-      const endpoint = `http://localhost:8080/client/update/${auth.id}`;
+      const endpoint = `/client/update/${auth.id}`;
 
       
-      axios
+      customAxios
         .put(endpoint, clientData, {
           headers: {
             Authorization: `Bearer ${auth.accessToken}`
           }
         })
         .then((response) => {
-          console.log('Datos actualizados:', response.data);
+          console.log(response.data);
           handleUpdate(response.data);
           console.log('User ID after update:', auth.id);
 

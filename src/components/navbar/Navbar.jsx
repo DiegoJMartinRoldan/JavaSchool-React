@@ -14,7 +14,7 @@ import Context from "../../pages/authentication/customHooks/Auth";
 function Navbar() {
 
   const { auth } = useContext(Context);
-  console.log('Auth state:', auth);
+  //console.log('Auth state:', auth);
 
 
   return (
