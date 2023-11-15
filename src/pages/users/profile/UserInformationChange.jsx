@@ -89,11 +89,9 @@ function UserInformationChange({
       console.log('Client state updated:', updatedClient);
     }
     handleSuccess();
-    // Llama a la función de callback proporcionada en las props
     if (onUpdate) {
       onUpdate(updatedClient);
     }
-    // Llama a la función de actualización después de la navegación
     if (onUpdateAfterNavigation) {
       onUpdateAfterNavigation(updatedClient);
     }
