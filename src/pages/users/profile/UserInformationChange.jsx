@@ -3,34 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useParams } from 'react-router-dom';
 import useAuth from '../../authentication/customHooks/useAuth';
 import Context from '../../authentication/customHooks/Auth';
-import customAxios from '../../authentication/customHooks/customAxios';
+import useCustomAxios from '../../authentication/customHooks/useCustomAxios';
 
 
 
-
-function UserInformationChange({
-  handleClientUpdate,
-  setUpdateTrigger,
-  onUpdate,
-  onUpdateAfterNavigation,
-}) {
+function UserInformationChange(props){
+  const { auth, updateAuth } = useAuth(Context);
+  const customAxios = useCustomAxios();
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { updateAuth, auth} = useAuth();
-
-
-
-
-
-
-  // Define navigation constant after form submission
   const navigate = useNavigate();
+  const { handleClientUpdate } = props.location.state;
 
 
   // Define function for displaying success message (Toastify)
@@ -69,10 +56,6 @@ function UserInformationChange({
       isProceed = false;
       errormessage += 'Email'
     }
-    if (password === null || password === '') {
-      isProceed = false;
-      errormessage += 'Password'
-    }
 
     // If any field is empty, display a warning toast with the error message
     if (!isProceed) {
@@ -80,22 +63,15 @@ function UserInformationChange({
     }
     return isProceed;
   }
-
+  
   const handleUpdate = (updatedClient) => {
-    console.log('handleUpdate called');
     if (handleClientUpdate) {
-      handleClientUpdate(updatedClient);
-      setUpdateTrigger((prevState) => !prevState);
       console.log('Client state updated:', updatedClient);
-    }
-    handleSuccess();
-    if (onUpdate) {
-      onUpdate(updatedClient);
-    }
-    if (onUpdateAfterNavigation) {
-      onUpdateAfterNavigation(updatedClient);
+      handleClientUpdate(updatedClient);
+      handleSuccess();
     }
   };
+
 
 
   // Function to handle form submission
@@ -109,7 +85,6 @@ function UserInformationChange({
       surname: surname,
       dateOfBirth: dateOfBirth,
       email: email,
-      password: password,
       role: 'ROLE_USER'
     };
 
@@ -121,19 +96,18 @@ function UserInformationChange({
 
       
       customAxios
-        .put(endpoint, clientData, {
+        .patch(endpoint, clientData, {
           headers: {
             Authorization: `Bearer ${auth.accessToken}`
           }
         })
         .then((response) => {
-          console.log(response.data);
+          console.log('Datos actualizados:', response.data);
           handleUpdate(response.data);
           console.log('User ID after update:', auth.id);
-
-          if (updateAuth) {
-            updateAuth({ ...auth, ...response.data });
-            console.log('Auth context updated:', { ...auth, ...response.data });
+          
+          if(handleClientUpdate) {
+            handleClientUpdate(response.data); 
           }
 
           handleSuccess();
@@ -184,15 +158,6 @@ function UserInformationChange({
             className="form-control"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Password:</label>
-          <input
-            type="password"
-            className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 

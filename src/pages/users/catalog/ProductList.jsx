@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
+import useCustomAxios from '../../authentication/customHooks/useCustomAxios';
 
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(5);
   const [filter, setFilter] = useState('');
+  const customAxios = useCustomAxios();
 
+  //Products List
   useEffect(() => {
-    const endpoint = 'http://localhost:8080/product/list';
-    axios
+    const endpoint = '/product/list';
+    customAxios
       .get(endpoint)
       .then((response) => {
         const productData = response.data;
-        setProducts(productData); 
+        setProducts(productData);
         //console.log(productData);
       })
       .catch((error) => {
@@ -32,6 +35,39 @@ function ProductList() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+
+  //AddToCart
+  const handleAddToCart = (product) => {
+    const addToCartEndpoint = '/client/addToCart';
+
+        const addProduct = {
+            id: product.id,
+            title: product.title,
+            category: product.category,
+            parameters: product.parameters,
+            volume: product.volume,
+            weight: product.weight,
+            quantityStock: product.quantityStock
+        };
+
+        customAxios
+        .post(addToCartEndpoint, addProduct)
+        .then((response)=> {
+            console.log(response.data)
+        })
+        .catch((error) => {
+            console.error('Error', error)
+          })
+    
+    console.log(`Added to cart: ${product.title}`);
+  };
+
+
+
+
+
+
+
   return (
     <div>
       <h1>Catalog</h1>
@@ -47,7 +83,7 @@ function ProductList() {
       {currentProducts.map((product) => (
         <div key={product.id}>
           <p>{product.title}</p>
-          <button>Add to cart</button>
+          <button onClick={() => handleAddToCart(product)}>Add to cart</button>
           <button>Buy</button>
           <NavLink to={`/singleProductInfo/${product.id}`}>Product Info</NavLink>
         </div>

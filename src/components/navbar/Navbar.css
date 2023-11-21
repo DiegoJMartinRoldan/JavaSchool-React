@@ -1,13 +1,43 @@
 
-.navbar {
-    margin-bottom: 20px;
-  }
-  
+#navbar, .menu{
+  padding: 10px;
+  background-color:transparent;
+  z-index: 1000;
+  display: flex;
 
-  .navbar-nav .nav-item {
-    margin-right: 10px; 
-  }
-  
-  
- 
-  
+
+}
+
+.logo{
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.features{
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu{
+  display: flex;
+  font-weight: 400;
+  gap: 30px;
+  list-style: none;
+  padding-top: 10px;
+
+
+}
+
+.menu li:hover{
+  color: rgb(237, 109, 100);
+  cursor: poi;
+}
+.shoppingCart{
+  padding-top: 10px;
+  text-decoration: none;
+  list-style: none;
+
+}

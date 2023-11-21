@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { useContext } from 'react';
 import Context from './Auth';
+import { useNavigate } from 'react-router-dom';
+
 
 const useRefreshToken = () => {
-    const { auth, updateAuth } = useContext(Context);
+    const { auth, updateAuth} = useContext(Context);
+
 
 
 
@@ -17,9 +20,9 @@ const useRefreshToken = () => {
             }
             const response = await axios.post(endpoint, refreshToken);
             //console.log('Refresh Token Request Response:', response.data);
-           //console.log(response.data.token);  
+            //console.log(response.data.token);  
 
-           //Update "updateAuth" with new accessToken/token
+            //Update "updateAuth" with new accessToken/token
             updateAuth((prev) => {
                 //console.log('Previous Auth:', prev);
                 return {
@@ -32,8 +35,11 @@ const useRefreshToken = () => {
             return response.data.accessToken;
         } catch (error) {
             console.error('Error while refreshing token:', error);
+
+            
             throw error;
         }
+        
     };
 
     return refresh;

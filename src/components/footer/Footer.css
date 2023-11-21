@@ -1,18 +1,17 @@
 .footer {
-  background-color: #a8c7e6;
-  color: #161414;
-  position: relative;
+  background-color: transparent; 
+  color: #525558; 
 }
 
 .footer-title {
-  letter-spacing: 1px;
-  color: #fff;
-}
-
-.footer table {
-  color: #111111;
+  color: #1b1c1d; 
 }
 
 .footer-bottom {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #343a40; 
+  color: #ffffff; 
+}
+
+.footer-bottom a {
+  color: #ffffff; 
 }

@@ -35,6 +35,7 @@ export const Auth = ({ children }) => {
         }));
     };
 
+    //Logout
     const logout = () => {
         setAuth({
           id: null,
@@ -43,6 +44,8 @@ export const Auth = ({ children }) => {
         });
         localStorage.clear();
       };
+
+      
 
 
 

@@ -1,0 +1,11 @@
+:root {
+    --background: linear-gradient(to right, rgb(147, 166, 228), #209bff); /* Ruta relativa de tu imagen */
+  }
+  
+  body {
+    background-image: var(--background);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  

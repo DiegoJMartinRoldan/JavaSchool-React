@@ -1,3 +1,5 @@
+// Footer.js
+
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Footer.css';
@@ -17,10 +19,10 @@ function Footer() {
             <h5 className="mb-3 footer-title">Links</h5>
             <ul className="list-unstyled">
               <li>
-                <a href="#">Links</a>
+                <a href="#">Link 1</a>
               </li>
               <li>
-                <a href="#">Links</a>
+                <a href="#">Link 2</a>
               </li>
             </ul>
           </div>
@@ -36,11 +38,12 @@ function Footer() {
             </table>
           </div>
         </div>
+        <p>&copy; 2023 JavaSchool. All rights reserved.</p>
       </div>
-      <div className="text-center py-3 footer-bottom">
-        © 2023 JavaSchool
-        <a href="#" className="text-dark"></a>
-      </div>
+     {/*  <div className="text-center py-3 footer-bottom">
+        <p>&copy; 2023 JavaSchool. All rights reserved.</p>
+
+      </div>*/}
     </footer>
   );
 }

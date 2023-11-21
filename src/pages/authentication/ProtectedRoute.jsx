@@ -15,10 +15,10 @@ const ProtectedRoute = ({ element, role }) => {
         const endpoint = 'http://localhost:8080/client/refreshToken';
         try {
             const response = await axios.post(endpoint, { token });
-            const newAccessToken = response.data.accessToken; 
+            const newAccessToken = response.data.accessToken;
             console.log(newAccessToken)
             return newAccessToken;
-            
+
         } catch (error) {
             console.error(error);
             return null;
@@ -31,10 +31,9 @@ const ProtectedRoute = ({ element, role }) => {
         const checkAuthentication = async () => {
 
             const accessToken = localStorage.getItem('accessToken');
-
+            const refreshToken = localStorage.getItem('refreshToken');
             // If there is no access token, attempt to get a new one using the refresh token
-            if (!accessToken) {
-                const refreshToken = localStorage.getItem('refreshToken');  // Corrected line
+            if (!accessToken && refreshToken) {
                 const newAccessToken = await getNewAccessToken(refreshToken);
                 localStorage.setItem('accessToken', newAccessToken);
 
@@ -43,18 +42,18 @@ const ProtectedRoute = ({ element, role }) => {
 
             // Check if the user is authenticated and if their role has the necessary permissions
             if (!accessToken) {
-                navigate("/login"); 
+                navigate("/login");
             } else if (!role.includes(userRole)) {
-                navigate("/unauthorized"); 
+                navigate("/unauthorized");
             }
         };
-        checkAuthentication(); 
+        checkAuthentication();
     }, [userRole, navigate, role]);
 
 
     // Suscessfull Authentication response: 
     if (isAuthenticated && role.includes(userRole)) {
-        return element; 
+        return element;
     }
 };
 

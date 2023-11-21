@@ -1,10 +1,25 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import './Navbar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavLink } from "../NavLink";
 import useAuth from "../../pages/authentication/customHooks/useAuth";
 import Context from "../../pages/authentication/customHooks/Auth";
+import { useNavigate } from "react-router-dom";
 
+import { BsCart2 } from "react-icons/bs";
+import { HiOutlineBars3 } from "react-icons/hi2";
+
+import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import InfoIcon from "@mui/icons-material/Info";
+import CommentRoundedIcon from "@mui/icons-material/CommentRounded";
+import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
+import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
+import { Home } from "@mui/icons-material";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import LoginIcon from '@mui/icons-material/Login';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 
 
@@ -12,47 +27,91 @@ import Context from "../../pages/authentication/customHooks/Auth";
 
 
 function Navbar() {
+  const { auth, logout } = useContext(Context);
+  const navigate = useNavigate();
 
-  const { auth } = useContext(Context);
+
+  const IsUser = auth.accessToken && auth.role === "ROLE_USER";
+  const IsAdmin = auth.accessToken && auth.role === "ROLE_ADMIN";
+
+
+  const handleLogout = () => {
+    localStorage.clear();
+    logout();
+    navigate('/');
+  };
+
   //console.log('Auth state:', auth);
-
-
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a className="navbar-brand" href="#">My App</a>
-      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul className="navbar-nav">
-          <li className="nav-item active">
-            <NavLink to='/'>Home</NavLink>
-          </li>
+    <nav id="navbar" className="navbar navbar-expand-lg">
+
+      <div className="logo">
+        <a className="navbar-brand" href="#">
+          DMR
+        </a>
+      </div>
+
+
+      <div className="features" >
+        <ul className="menu">
+          <li className="listItem">
+            <NavLink to="/">Home</NavLink>
+          </li  >
           {!auth.accessToken && (
             <>
-              <li className="nav-item">
-                <NavLink to='/register'>Register</NavLink>
+              <li className="listItem">
+                <NavLink to="/register">Register</NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to='/login'>Login</NavLink>
+              <li className="listItem" >
+                <NavLink to="/login">Login</NavLink>
               </li>
             </>
           )}
           {auth.accessToken && (
             <>
-              <li className="nav-item">
-                <NavLink to='/profile'>Profile</NavLink>
+              <li className="listItem">
+                <button onClick={handleLogout}>Logout</button>
               </li>
             </>
           )}
           
-          <li className="nav-item">
-                <NavLink to='/shoppingCart'>Shopping Cart</NavLink>
+          {IsUser && (
+            <>
+            <li className="listItem">
+                <NavLink to="/profile">Profile</NavLink>
               </li>
+            </>
+            
+          )}
 
+          {IsAdmin && (
+            <>
+              <li className="listItem">
+                <NavLink to="/adminProducts">Products</NavLink>
+              </li>
+              <li className="listItem">
+                <NavLink to="/statistics">Statistics</NavLink>
+              </li>
+              <li className="listItem">
+                <NavLink to="/adminOrderHistory">Order History</NavLink>
+              </li>
+            </>
+          )}
+          
         </ul>
       </div>
-    </nav>
+
+
+      <div>
+        <ul>
+          <li className="shoppingCart">
+            <NavLink to="/shoppingCart">
+              <ShoppingCartIcon className="cart" />
+            </NavLink>
+          </li>
+        </ul>
+      </div>
+    </nav >
   );
 }
 

@@ -1,17 +1,19 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
+import useCustomAxios from '../../authentication/customHooks/useCustomAxios';
 
 
 function SingleProductInfo() {
 
     const [product, setProduct] = useState({});
+    const customAxios = useCustomAxios();
     const {id} = useParams();
 
     useEffect(() => {
 
-        const endpoint = `http://localhost:8080/product/getby/${id}`;
-        axios
+        const endpoint = `/product/getby/${id}`;
+        customAxios
         .get(endpoint)
         .then((response) =>{
             const productData = response.data;

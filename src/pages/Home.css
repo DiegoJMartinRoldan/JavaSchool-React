@@ -1,0 +1,47 @@
+/* Resto de tus estilos aquí */
+.home-container {
+    position: relative;
+    display: grid;
+    text-align: right;
+    border: 2px solid #000;
+}
+
+.content {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-190%, -80%);
+    color: black;
+    font-size: 30px;
+
+}
+
+.homeImg {
+    display: flex;
+    justify-content: end;
+    position: relative;
+
+}
+
+.homeImg img {
+
+    position: relative;
+    display: grid;
+}
+
+.text {
+    text-transform: uppercase;
+    font-size: 25px;
+    height: 100px;
+    display: block;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+
+}
+
+.additional-content {
+    margin-top: 20px;
+
+    /* Estilos específicos para el contenido adicional */
+}
+

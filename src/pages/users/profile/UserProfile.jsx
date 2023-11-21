@@ -13,7 +13,7 @@ function UserProfile() {
 
   const [client, setClient] = useState({});
 
-  const { auth, logout } = useAuth(Context);
+  const { auth} = useAuth(Context);
   const customAxios = useCustomAxios();
   const { updateTrigger, setUpdateTrigger } = useAuth(Context);
   const [deleteAddressId, setDeleteAddressId] = useState(null);
@@ -45,12 +45,12 @@ function UserProfile() {
   }, [auth.id, auth.accessToken, updateTrigger]);
 
 
-
-  const handleUpdateAfterNavigation = (updatedClient) => {
+  const handleClientUpdate = (updatedClient) => {
     setClient(updatedClient);
-    setUpdateTrigger((prevState) => !prevState);
-  };
+    setUpdateTrigger(prevState => !prevState);
 
+
+  };
 
 
 
@@ -96,12 +96,7 @@ function UserProfile() {
 
   console.log(client.clientsAddresses)
 
-  //Logout
-  const handleLogout = () => {
-    localStorage.clear();
-    logout();
-    navigate('/');
-  };
+
 
 
   return (
@@ -112,16 +107,12 @@ function UserProfile() {
       <p>Date of Birth: {client.dateOfBirth}</p>
       <p>Email: {client.email}</p>
       <button
-        onClick={() => {
-          navigate(`/userInformationChange/${client.id}`, {
-            state: {
-              setUpdateTrigger: setUpdateTrigger,
-              onUpdateAfterNavigationData: {
-                handleUpdateAfterNavigation: handleUpdateAfterNavigation,
-              },
-            },
-          });
-        }}
+        onClick={() => navigate(`/userInformationChange/${client.id}`, {
+          state: {
+            handleClientUpdate: handleClientUpdate,
+            setUpdateTrigger: setUpdateTrigger,
+          }
+        })}
       >
         Change personal data
       </button>
@@ -197,8 +188,6 @@ function UserProfile() {
       {/* <NavLink >Delete Order</NavLink><br />*/}
       <p>--------------</p>
 
-
-      <button onClick={handleLogout}>Logout</button>
 
 
 
