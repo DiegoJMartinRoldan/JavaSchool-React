@@ -1,37 +1,34 @@
+// Home.js
+
 import React from 'react';
-import './Home.css';
+import styles from './Home.module.css';
 
 function Home() {
   return (
-
-    <div className="home-container">
-
-      <div className='homeImg'>
-        <img src="/homeimg.png" alt="Home Image" className="background-image" />
-      </div>
-      <div className="content">
-
-        <div className="text">
-          Online Store Application
-          <div>
-            <button className='btn' onClick={() => window.location.href = '/catalog'}>
-            <span className="shadow"></span>
-            <span className="edge"></span>
-            <span className="front">
-              Catalog
-              </span>
-            </button>
+    <div className={styles['home-container']}>
+      <div className={styles['text-and-img']}>
+        <div className={styles.content}>
+          <div className={styles.text}>
+            <h1>Online Storage Application System</h1>
+            <p>Diego J. Martín Roldán</p>
+            <div>
+              <button className={styles.pushable} onClick={() => window.location.href = '/catalog'}>
+                <span className={styles.shadow}></span>
+                <span className={styles.edge}></span>
+                <span className={styles.front}>
+                  Catalog
+                </span>
+              </button>
+            </div>
           </div>
         </div>
-
-        <div className="additional-content">
-          aaaa
+        <div className={styles.homeImg} >
+          <img src="/homeimg.png" alt="Home Image" className={styles['background-image']} />
         </div>
-
       </div>
-
     </div>
   );
 }
+
 
 export default Home;

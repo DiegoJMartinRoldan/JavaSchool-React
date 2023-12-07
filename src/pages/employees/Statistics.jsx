@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import useAuth from '../authentication/customHooks/useAuth'
 import Context from '../authentication/customHooks/Auth'
 import { toast } from 'react-toastify';
+import './Statistics.css'
 
 
 function Statistics() {
@@ -136,188 +137,171 @@ function Statistics() {
       toast.warning(errorMessage);
     }
 
-      return isAdded;
+    return isAdded;
+  };
+
+
+  const handleMonthlyRevenue = (event) => {
+    event.preventDefault();
+
+    const monthlyRevenueEndpoint = '/statistics/monthly';
+
+    const monthlyRevenueData = {
+      year: year,
+      month: month,
     };
 
+    if (isValidate()) {
+      customAxios
+        .post(monthlyRevenueEndpoint, monthlyRevenueData, {
+          headers: {
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          const monthlyRevenueResult = response.data;
+          setMonthlyRevenue(monthlyRevenueResult);
+          console.log('Monthly Revenue', monthlyRevenueResult);
+        })
+        .catch((error) => {
+          toast.error('Try again.');
+          console.error('Error', error);
+        });
+    }
+  };
 
-    const handleMonthlyRevenue = (event) => {
-      event.preventDefault();
-
-      const monthlyRevenueEndpoint = '/statistics/monthly';
-
-      const monthlyRevenueData = {
-        year: year,
-        month: month,
-      };
-
-      if (isValidate()) {
-        customAxios
-          .post(monthlyRevenueEndpoint, monthlyRevenueData, {
-            headers: {
-              Authorization: `Bearer ${auth.accessToken}`,
-            },
-          })
-          .then((response) => {
-            console.log(response.data);
-            const monthlyRevenueResult = response.data;
-            setMonthlyRevenue(monthlyRevenueResult);
-            console.log('Monthly Revenue', monthlyRevenueResult);
-          })
-          .catch((error) => {
-            toast.error('Try again.');
-            console.error('Error', error);
-          });
-      }
-    };
-
-    return (
-      <div>
-        {/*Clients List */}
-        <h1>Clients</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Surname</th>
-              <th>Date of Birth</th>
-              <th>Email</th>
+  return (
+    <div className="statistics-clients-container">
+      {/* Clients List */}
+      <h3 className='clients-statistics'>Clients</h3>
+      <table className="statistics-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Date of Birth</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentClient.map((client) => (
+            <tr key={client.id}>
+              <td>{client.name}</td>
+              <td>{client.surname}</td>
+              <td>{client.dateOfBirth}</td>
+              <td>{client.email}</td>
             </tr>
-          </thead>
-          <tbody>
-
-            {currentClient.map((client) => (
-              <tr key={client.id}>
-                <td>{client.name}</td>
-                <td>{client.surname}</td>
-                <td>{client.dateOfBirth}</td>
-                <td>{client.email}</td>
-              </tr>
-            ))}
-
-          </tbody>
-        </table>
-
-        <div>
-          {Array.from({ length: Math.ceil(client.length / clientsPerPage) }, (_, index) => (
-            <button key={index} onClick={() => paginate(index + 1)}>
-              {index + 1}
-            </button>
           ))}
-        </div>
+        </tbody>
+      </table>
 
-        <p>----------</p>
-        {/*Top 10 Clients */}
-
-        <h1>Top 10 Clients</h1>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Surname</th>
-              <th>Date of Birth</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {topTenClients.map((topTenClients) => (
-              <tr key={topTenClients.id}>
-                <td>{topTenClients.name}</td>
-                <td>{topTenClients.surname}</td>
-                <td>{topTenClients.dateOfBirth}</td>
-                <td>{topTenClients.email}</td>
-              </tr>
-            ))}
-
-          </tbody>
-        </table>
-
-        <p>----------------</p>
-        {/*Top 10 Products */}
-
-        <h1>Top 10 Products</h1>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Price</th>
-              <th>Category</th>
-              <th>Parameters</th>
-              <th>Weight</th>
-              <th>Volume</th>
-              <th>Quantity Stock</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {topTenProducts.map((topTenProducts) => (
-              <tr key={topTenProducts.id}>
-                <td>{topTenProducts.title}</td>
-                <td>{topTenProducts.price}</td>
-                <td>{topTenProducts.category}</td>
-                <td>{topTenProducts.parameters}</td>
-                <td>{topTenProducts.weight}</td>
-                <td>{topTenProducts.volume}</td>
-                <td>{topTenProducts.quantityStock}</td>
-              </tr>
-            ))}
-
-          </tbody>
-        </table>
-        <p>----------------</p>
-
-        {/*Weekly Revenue */}
-
-        <h1>Weekly Revenue</h1>
-        <span>{weeklyRevenue !== undefined ? weeklyRevenue.toString() + '€' : 'No data available'}</span>
-
-        <p>----------------</p>
-        {/*Monthly Revenue */}
-
-        <div className='container mt-5'>
-          <h1>Monthly Revenue</h1>
-          <form onSubmit={handleMonthlyRevenue} className='row g-3'>
-            <div className='col-md-6'>
-              <label className="form-label">Year:</label>
-              <input
-                type="text"
-                className="form-control"
-                value={year}
-                onChange={(e) => setYear(e.target.value)}
-              />
-            </div>
-
-            <div className='col-md-6'>
-              <label className="form-label">Month:</label>
-              <input
-                type="text"
-                className="form-control"
-                value={month}
-                onChange={(e) => setMonth(e.target.value)}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary me-2">
-              Submit
-            </button>
-          </form>
-        </div>
-
-
-        <h1>Monthly Revenue</h1>
-        <span>{monthlyRevenue !== undefined ? monthlyRevenue.toString() + '€' : 'No data available'}</span>
-
-
-
-
-
-
-
-
+      <div className="statistics-pagination">
+        {Array.from({ length: Math.ceil(client.length / clientsPerPage) }, (_, index) => (
+          <button key={index} onClick={() => paginate(index + 1)}>
+            {index + 1}
+          </button>
+        ))}
       </div>
-    )
-  }
+
+      {/* Top 10 Clients */}
+      <h3 className='top-clients-statistics'>Top 10 Clients</h3>
+      <table className="statistics-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Date of Birth</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {topTenClients.map((topTenClient) => (
+            <tr key={topTenClient.id}>
+              <td>{topTenClient.name}</td>
+              <td>{topTenClient.surname}</td>
+              <td>{topTenClient.dateOfBirth}</td>
+              <td>{topTenClient.email}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Top 10 Products */}
+      <h3 className='top-products-statistics'>Top 10 Products</h3>
+      <table className="statistics-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Parameters</th>
+            <th>Weight</th>
+            <th>Volume</th>
+            <th>Quantity Stock</th>
+          </tr>
+        </thead>
+        <tbody>
+          {topTenProducts.map((topTenProduct) => (
+            <tr key={topTenProduct.id}>
+              <td>{topTenProduct.title}</td>
+              <td>{topTenProduct.price}</td>
+              <td>{topTenProduct.category}</td>
+              <td>{topTenProduct.parameters}</td>
+              <td>{topTenProduct.weight}</td>
+              <td>{topTenProduct.volume}</td>
+              <td>{topTenProduct.quantityStock}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Weekly Revenue */}
+      <div className='weekly-statistics'>
+        <h3 className='weekly-title' >Weekly Revenue</h3>
+        <span>{weeklyRevenue !== undefined ? `${weeklyRevenue.toString()}€` : 'No data available'}</span>
+      </div>
+
+
+      {/* Monthly Revenue */}
+      <div className="statistics-monthly-revenue">
+
+        <form onSubmit={handleMonthlyRevenue} className="row g-3">
+          <h4 className='monthly-statistics'>Monthly Revenue</h4>
+          <div className=" monthly-form col-md-6">
+            <label className="form-label">Year:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+            />
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Month:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+            />
+          </div>
+          <button type="submit" className="statistics-statistics-btn btn">
+            Submit
+          </button>
+          <h4 className='monthly-statistics'>Monthly Revenue Result:</h4>
+        <span className='monthly-response'>{monthlyRevenue !== undefined ? `${monthlyRevenue.toString()}€` : 'No data available'}</span>
+        </form>
+        
+        
+      </div>
+    </div>
+  );
+
+
+
+
+}
 
 
 export default Statistics;

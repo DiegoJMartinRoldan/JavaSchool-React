@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Context from '../authentication/customHooks/Auth';
 import useAuth from '../authentication/customHooks/useAuth';
 import { ToastContainer, toast } from 'react-toastify';
+import '../employees/css/Products.css'
 
 
 function Products() {
@@ -19,15 +20,15 @@ function Products() {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [category, setCategory] = useState('');
     const navigate = useNavigate();
-    const {auth} = useAuth();
+    const { auth } = useAuth();
 
- 
-  
+
+
     const handleSuccess = () => {
         toast.success('New category created');
 
         setTimeout(() => {
-            navigate('/adminProducts'); 
+            navigate('/adminProducts');
         }, 1000);
     };
 
@@ -59,140 +60,102 @@ function Products() {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
-    const handleNewCategory = () => {
-
-        const newCategory = {
-            category: category
-
-        }
-        const newCategoryEndpoint = '/product/newCatalogCategory'
-
-        customAxios.post(newCategoryEndpoint,newCategory , {
-            headers: {
-                Authorization: `Bearer ${auth.accessToken}`
-            }
-        })
-            .then((response) => {
-                console.log(response.data, "new category response")
-                handleSuccess();
-            })
-            .catch((error) => {
-                toast.error('There was an error while updating. Try again.');
-                console.error('Error', error);
-            });
-    };
 
 
     return (
-        <div>
-              <ToastContainer />
-            <h1>Products</h1>
-
-            {/* Filter */}
-            <input
-                type="text"
-                placeholder="Filter by category"
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-            />
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Price</th>
-                        <th>Category</th>
-                        <th>Parameters</th>
-                        <th>Weight</th>
-                        <th>Volume</th>
-                        <th>Quantity Stock</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentProducts.map((product) => (
-                        <tr key={product.id}>
-                            <td>{product.title}</td>
-                            <td>{product.price}</td>
-                            <td>{product.category}</td>
-                            <td>{product.parameters}</td>
-                            <td>{product.weight}</td>
-                            <td>{product.volume}</td>
-                            <td>{product.quantityStock}</td>
-                            <td>
-                                <button onClick={() => navigate(`/updateProduct`, {
-                                    state: {
-                                        productId: product.id,
-                                    }
-                                })}>
-                                    Update Product
-                                </button>
-                            </td>
-                            <td>
-                                <button
-                                    onClick={() => {
-                                        setDeleteProduct(product.id);
-                                        setShowConfirmation(true);
-                                    }}
-                                >
-                                    Delete Product
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-            {deleteProduct && (
-                <DeleteProduct
-                    deleteProduct={deleteProduct}
-                    showConfirmation={showConfirmation}
-                    onCancel={() => setShowConfirmation(false)}
-                    onDelete={(deletedId) => {
-                        setProducts((prevProducts) =>
-                            prevProducts.filter((product) => product.id !== deletedId)
-                        );
-                        setDeleteProduct(null);
-                        setShowConfirmation(false);
-                    }}
-                />
-            )}
-
-            {/* Pagination */}
-            <div>
-                {Array.from({ length: Math.ceil(filteredProducts.length / productsPerPage) }, (_, index) => (
-                    <button key={index} onClick={() => paginate(index + 1)}>
-                        {index + 1}
+        <div className="p-product-list-container">
+          <ToastContainer />
+          <h1 className="p-product-list-heading">Products</h1>
+      
+          {/* Filter */}
+          <input
+            type="text"
+            placeholder="Filter by category"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="p-product-list-filter"
+          />
+      
+          <table id="p-product-list-table" className="p-product-list-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Parameters</th>
+                <th>Weight</th>
+                <th>Volume</th>
+                <th> Stock</th>
+                <th>Update</th>
+                <th>Delete </th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentProducts.map((product) => (
+                <tr key={product.id}>
+                  <td>
+                    <img
+                      className="admin-p-product-list-image"
+                      src={`data:image/jpeg;base64,${product.image}`}
+                      alt={product.title}
+                    />
+                  </td>
+                  <td>{product.title}</td>
+                  <td>{product.price}</td>
+                  <td>{product.category}</td>
+                  <td>{product.parameters}</td>
+                  <td>{product.weight}</td>
+                  <td>{product.volume}</td>
+                  <td>{product.quantityStock}</td>
+                  <td>
+                    <button className='update-admin-products-btn btn' onClick={() => navigate(`/updateProduct`, { state: { productId: product.id } })}>
+                      Update 
                     </button>
-                ))}
-            </div>
-
-            <div>
-                <button onClick={() => navigate('/addProduct')}>Create Product</button>
-            </div>
-
-            <div>
-                <h6 className="mb-3">Create New Category</h6>
-                <form onSubmit={handleNewCategory} className="row g-3">
-                    <div className="col-12 col-md-6">
-                        <label className="form-label">New Category:</label>
-                        <div className="input-group">
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value)}
-                            />
-                            <button type="submit" className="btn btn-primary ms-2">
-                                Create
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-
+                  </td>
+                  <td>
+                    <button className='delete-admin-products-btn btn'
+                      onClick={() => {
+                        setDeleteProduct(product.id);
+                        setShowConfirmation(true);
+                      }}
+                    >
+                      Delete 
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+      
+          {deleteProduct && (
+            <DeleteProduct
+              deleteProduct={deleteProduct}
+              showConfirmation={showConfirmation}
+              onCancel={() => setShowConfirmation(false)}
+              onDelete={(deletedId) => {
+                setProducts((prevProducts) => prevProducts.filter((product) => product.id !== deletedId));
+                setDeleteProduct(null);
+                setShowConfirmation(false);
+              }}
+            />
+          )}
+      
+          {/* Pagination */}
+          <div id="p-product-list-pagination" className="p-product-list-pagination">
+            {Array.from({ length: Math.ceil(filteredProducts.length / productsPerPage) }, (_, index) => (
+              <button key={index} onClick={() => paginate(index + 1)}>
+                {index + 1}
+              </button>
+            ))}
+          </div>
+      
+          <div >
+            <button className="create-admin-product-btn btn" onClick={() => navigate('/addProduct')}>Create Product</button>
+          </div>
         </div>
-    )
+      );
+      
 }
 
 export default Products;

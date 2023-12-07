@@ -17,9 +17,10 @@ function AddProduct() {
   const [weight, setWeight] = useState('');
   const [volume, setVolume] = useState('');
   const [quantityStock, setQuantityStock] = useState('');
+  const [image, setImage] = useState(null); // Nuevo estado para la imagen
   const customAxios = useCustomAxios();
   const navigate = useNavigate();
-  const {auth} = useAuth(Context);
+  const { auth } = useAuth(Context);
 
 
   const handleSuccess = () => {
@@ -65,6 +66,10 @@ function AddProduct() {
       isAdded = false;
       errorMessage += 'Quantity Stock';
     }
+    if (!image) {
+      isAdded = false;
+      errorMessage += 'Imagen ';
+    }
 
     if (!isAdded) {
       toast.warning(errorMessage);
@@ -73,13 +78,24 @@ function AddProduct() {
     return isAdded;
   };
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
 
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
 
   //Create Product
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const createProductEndpoint = '/product/create'
+    const createProductEndpoint = '/product/create';
 
     const productData = {
       title: title,
@@ -88,35 +104,37 @@ function AddProduct() {
       parameters: parameters,
       weight: weight,
       volume: volume,
-      quantityStock: quantityStock
-    }
+      quantityStock: quantityStock,
+      image: image.split(",")[1], 
+    };
 
     if (isValidate()) {
-      customAxios.post(createProductEndpoint, productData, {
-        headers: {
-          'Authorization': 'Bearer ' + auth.accessToken
-        }
-      })
+      customAxios
+        .post(createProductEndpoint, productData, {
+          headers: {
+            Authorization: 'Bearer ' + auth.accessToken,
+            'Content-Type': 'application/json'
+          },
+        })
         .then((response) => {
-          console.log(response.data)
+          console.log(response.data);
           handleSuccess();
-
         })
         .catch((error) => {
-          toast.error('Try again.');
+          toast.error('Inténtalo de nuevo.');
           console.error('Error', error);
-        })
+        });
     }
+  };
 
-  }
 
 
   return (
-    <div className='container mt-5'>
+    <div className="container mt-5">
       <ToastContainer></ToastContainer>
-      <h2>Create Product</h2>
+      <h2>Crear Producto</h2>
 
-      <form onSubmit={handleSubmit} className='row g-3'>
+      <form onSubmit={handleSubmit} className="row g-3">
         <div className="col-md-6">
           <label className="form-label">Title:</label>
           <input
@@ -180,15 +198,23 @@ function AddProduct() {
             onChange={(e) => setQuantityStock(e.target.value)}
           />
         </div>
+        <div className="col-md-6">
+          <label className="form-label">Image:</label>
+          <input
+            type="file"
+            className="form-control"
+            onChange={handleImageChange}
+          />
+        </div>
         <button type="submit" className="btn btn-primary me-2">
           Add
         </button>
-        <button  className="btn btn-primary" onClick={() => navigate('/adminProducts')}>
-           Not now
-          </button>
+        <button className="btn btn-primary" onClick={() => navigate('/adminProducts')}>
+          Not now
+        </button>
       </form>
     </div>
-  )
+  );
 }
 
-export default AddProduct
+export default AddProduct;

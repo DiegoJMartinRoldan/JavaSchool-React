@@ -2,21 +2,19 @@ import React from 'react';
 import useCustomAxios from '../authentication/customHooks/useCustomAxios';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../authentication/customHooks/useAuth';
+import axios from 'axios';
+import Context from '../authentication/customHooks/Auth';
 
 function DeleteProduct({ deleteProduct, onDelete,  onCancel, showConfirmation }) {
-    const customAxios = useCustomAxios();
     const navigate = useNavigate();
-    const { auth } = useAuth();
+    const {auth} = useAuth(Context);
+
 
     const handleDelete = async () => {
-        const endpoint = `/product/delete/${deleteProduct}`;
+        const endpoint = `http://localhost:8080/product/delete/${deleteProduct}`;
 
         try {
-            await customAxios.delete(endpoint, {
-                headers: {
-                    Authorization: 'Bearer ' + auth.accessToken,
-                },
-            });
+            await axios.delete(endpoint);
             onDelete(deleteProduct);
             console.log('Product deleted successfully');
         } catch (error) {
@@ -25,8 +23,11 @@ function DeleteProduct({ deleteProduct, onDelete,  onCancel, showConfirmation })
     };
 
     const handleCancel = async () => {
-        onCancel();
-        navigate('/adminProducts');
+
+            onCancel();
+            navigate('/adminProducts');
+        
+       
     };
 
     return (

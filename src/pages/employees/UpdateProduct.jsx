@@ -15,10 +15,11 @@ function UpdateProduct(props) {
     const [parameters, setParameters] = useState('');
     const [weight, setWeight] = useState('');
     const [volume, setVolume] = useState('');
+    const [image, setImage] = useState();
     const customAxios = useCustomAxios();
     const [quantityStock, setQuantityStock] = useState('');
     const { productId } = useParams();
-    const {auth} = useAuth();
+    const { auth } = useAuth(Context);
     const { id } = useParams();
 
 
@@ -33,6 +34,20 @@ function UpdateProduct(props) {
         }, 1000);
     }
 
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+    
+        reader.onloadend = () => {
+          setImage(reader.result);
+        };
+    
+        if (file) {
+          reader.readAsDataURL(file);
+        }
+      };
+    
+
 
     const isValidate = () => {
         let isAdded = true;
@@ -40,31 +55,36 @@ function UpdateProduct(props) {
 
         if (!title) {
             isAdded = false;
-            errorMessage += 'Title';
+            errorMessage += ' Title';
         }
         if (!price) {
             isAdded = false;
-            errorMessage += 'Price';
+            errorMessage += ' Price';
         }
         if (!category) {
             isAdded = false;
-            errorMessage += 'Category';
+            errorMessage += ' Category';
         }
         if (!parameters) {
             isAdded = false;
-            errorMessage += 'Parameters';
+            errorMessage += ' Parameters';
         }
         if (!weight) {
             isAdded = false;
-            errorMessage += 'Weight';
+            errorMessage += ' Weight';
         }
         if (!volume) {
             isAdded = false;
-            errorMessage += 'Volume';
+            errorMessage += ' Volume';
         }
         if (!quantityStock) {
             isAdded = false;
-            errorMessage += 'Quantity Stock';
+            errorMessage += ' Quantity Stock';
+        }
+
+        if (!image) {
+            isAdded = false;
+            errorMessage += ' Image';
         }
 
         if (!isAdded) {
@@ -92,12 +112,14 @@ function UpdateProduct(props) {
             parameters: parameters,
             weight: weight,
             volume: volume,
-            quantityStock: quantityStock
+            quantityStock: quantityStock,
+            image: image.split(",")[1], 
         }
 
 
         if (isValidate()) {
             const updateEndpoint = `/product/update/${productId}`
+            console.log('Product ID', productId)
 
             customAxios
                 .post(updateEndpoint, productData, {
@@ -182,6 +204,15 @@ function UpdateProduct(props) {
                         className="form-control"
                         value={quantityStock}
                         onChange={(e) => setQuantityStock(e.target.value)}
+                    />
+                </div>
+
+                <div className="col-md-6">
+                    <label className="form-label">Image:</label>
+                    <input
+                        type="file"
+                        className="form-control"
+                        onChange={handleImageChange}
                     />
                 </div>
 

@@ -1,5 +1,5 @@
 :root {
-    --background: linear-gradient(to right, rgb(147, 166, 228), #209bff); /* Ruta relativa de tu imagen */
+    --background: linear-gradient(to right, rgb(147, 166, 228), #87c4f7); 
   }
   
   body {
@@ -9,3 +9,6 @@
     background-repeat: no-repeat;
   }
   
+  .content{
+    margin-bottom: 60px;
+  }

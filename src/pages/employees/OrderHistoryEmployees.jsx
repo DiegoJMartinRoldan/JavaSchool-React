@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import useCustomAxios from '../authentication/customHooks/useCustomAxios'
 import useAuth from '../authentication/customHooks/useAuth';
 import Context from '../authentication/customHooks/Auth';
+import '../employees/css/OrderHistoryEmployees.css'
 
 
 
@@ -66,37 +67,41 @@ function OrderHistoryEmployees() {
   };
 
   return (
-    <div>
-      <h1>Order History</h1>
+    <div className="o-order-history-container">
+      <h1 className="o-order-history-heading">Order History</h1>
 
-      <table>
+      <table className="o-order-history-table">
         <thead>
           <tr>
+            <th>Id</th>
             <th>Payment Method</th>
             <th>Delivery Method</th>
             <th>Payment Status</th>
             <th>Order Status</th>
-            <th>Order Date</th>
+            <th>Current Order Date</th>
+            <th>Change orderStatus</th>
           </tr>
         </thead>
         <tbody>
           {currentOrders.map((orders) => (
             <tr key={orders.id}>
+              <td>{orders.id}</td>
               <td>{orders.paymentMethod}</td>
               <td>{orders.deliveryMethod}</td>
               <td>{orders.paymentStatus}</td>
               <td>{orders.orderStatus}</td>
               <td>{orders.orderDate}</td>
-
-              <td>-- Change order Status: </td>
+              <td>
               <select
                 value={orders.orderStatus}
                 onChange={(e) => handleStatusChange(orders.id, e.target.value)}>
-                <option value="pending">Pending</option>
-                <option value="packed">Packed</option>
-                <option value="shipped">Shipped</option>
-                <option value="delivered">Delivered</option>
+                <option value="PENDING">PENDING</option>
+                <option value="PACKED">PACKED</option>
+                <option value="SHIPPED">SHIPPED</option>
+                <option value="DELIVERED">DELIVERED</option>
               </select>
+              </td>
+              
               
             </tr>
           ))}
@@ -104,7 +109,7 @@ function OrderHistoryEmployees() {
       </table>
 
       {/* Pagination */}
-      <div>
+      <div className="o-order-history-pagination">
         {Array.from({ length: Math.ceil(orders.length / ordersPerPage) }, (_, index) => (
           <button key={index} onClick={() => paginate(index + 1)}>
             {index + 1}
@@ -112,7 +117,8 @@ function OrderHistoryEmployees() {
         ))}
       </div>
     </div>
-  );
+);
+
 
 }
 

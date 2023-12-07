@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useAuth from './customHooks/useAuth';
 import Context from './customHooks/Auth';
+import './authenticationCss/Login.css'
 
 
 
@@ -76,6 +77,7 @@ function Login() {
         console.log('id: ' + id);
         console.log(localStorage);
         console.log(auth);
+
   
       } catch (error) {
         if (error.response && error.response.status === 403) {
@@ -115,51 +117,47 @@ function Login() {
 
 
 
-    return (
-      <div className="container mt-5">
-        <ToastContainer />
-        <div className="row">
-          <div className="col-sm-6 text-black">
-            <div className="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-              <form onSubmit={handleSubmitByToken}>
-                <h3 className="fw-normal mb-3 pb-3">Log in</h3>
-                <div className="form outline mb-4">
-                  <input
-                    type="text"
-                    placeholder="Email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="form outline mb-4">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div className="pt-1 mb-4">
-                  <button className="btn btn-primary btn-md btn-block" type="submit">
-                    Login
-                  </button>
-                </div>
-                <p className="small mb pb-lg-2">
-                  <NavLink to="/forgot-password" className="link-info">
-                    Forgot Password?
-                  </NavLink>
-                </p>
-                <p>
-                  Don't have an account yet? <NavLink to="/register">Register</NavLink>
-                </p>
-              </form>
+  return (
+    <div className="login-container mt-5">
+      <ToastContainer />
+      <div className="login-content">
+        <form onSubmit={handleSubmitByToken}>
+          <h3 className="login-title">Log in</h3>
+          <div className="login-form">
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="Email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="custom-input"
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="password"
+                placeholder="Password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="custom-input"
+              />
             </div>
           </div>
-        </div>
-      </div>
-    );
-  }
+          <div className="login-submit">
+            <button className="login-btn" type="submit">
+              Login
+            </button>
+          </div>
 
-  export default Login;
+          <p className="login-register">
+            Don't have an account yet? <NavLink to="/register">Register</NavLink>
+          </p>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default Login;

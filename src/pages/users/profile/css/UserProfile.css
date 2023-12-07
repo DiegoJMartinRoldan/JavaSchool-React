@@ -1,0 +1,131 @@
+.p-profile-container {
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.p-profile-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+}
+
+.p-profile-column {
+  flex-basis: calc(50% - 10px);
+  margin-bottom: 20px;
+
+
+ 
+}
+
+.p-profile-heading {
+  font-size: 28px;
+  font-weight: bold;
+  color: #070707;
+  margin-bottom: 20px;
+
+
+}
+
+.p-profile-btn {
+  padding: 8px 16px;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin: 10px auto;
+  display: block;
+  background-color: rgb(248, 100, 100);
+  width: 200px;
+
+}
+.p-profile-btn:hover {
+  background-color: rgb(221, 80, 80);
+
+}
+
+.p-profile-card {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: solid 1px;
+}
+
+.create-p-profile-btn{
+  padding: 8px 16px;
+  font-size: 16px;
+  margin-right: 10px;
+
+  display: block;
+  background-color: rgb(255, 196, 0);
+  width: 200px;
+
+}
+
+.create-p-profile-btn:hover{
+  
+  background-color: rgb(255, 145, 0);
+
+
+}
+
+
+.reorder-p-profile-btn{
+  padding: 8px 16px;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin: 10px auto;
+  display: block;
+  background-color: rgb(0, 255, 128);
+  width: 200px;
+
+
+}
+.reorder-p-profile-btn:hover{
+  background-color: rgb(71, 194, 132);
+ 
+
+}
+
+.personal-data-p-profile-btn{
+  padding: 8px 16px;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(52, 158, 245);
+  width: 200px;
+
+
+}
+.personal-data-p-profile-btn:hover{
+
+  background-color: rgb(0, 132, 255);
+  width: 200px;
+
+
+}
+
+.change-password-p-profile-btn{
+  padding: 8px 16px;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(176, 92, 245);
+  width: 200px;
+
+
+}
+.change-password-p-profile-btn:hover{
+
+  background-color: rgb(226, 150, 241);
+  width: 200px;
+
+
+}

@@ -46,9 +46,10 @@ function Navbar() {
     <nav id="navbar" className="navbar navbar-expand-lg">
 
       <div className="logo">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="/">
           DMR
         </a>
+
       </div>
 
 
@@ -69,19 +70,19 @@ function Navbar() {
           )}
           {auth.accessToken && (
             <>
-              <li className="listItem">
-                <button onClick={handleLogout}>Logout</button>
+              <li className="listItem logout">
+                <li onClick={handleLogout}>Logout</li>
               </li>
             </>
           )}
-          
+
           {IsUser && (
             <>
-            <li className="listItem">
+              <li className="listItem">
                 <NavLink to="/profile">Profile</NavLink>
               </li>
             </>
-            
+
           )}
 
           {IsAdmin && (
@@ -97,20 +98,17 @@ function Navbar() {
               </li>
             </>
           )}
-          
+
         </ul>
       </div>
 
 
-      <div>
-        <ul>
-          <li className="shoppingCart">
-            <NavLink to="/shoppingCart">
-              <ShoppingCartIcon className="cart" />
-            </NavLink>
-          </li>
-        </ul>
+      <div className="shoppingCarticon">
+        <NavLink to="/shoppingCart">
+          <ShoppingCartIcon className="cart" />
+        </NavLink>
       </div>
+
     </nav >
   );
 }

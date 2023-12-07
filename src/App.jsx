@@ -26,6 +26,7 @@ import UpdateProduct from './pages/employees/UpdateProduct';
 import AddCategory from './pages/employees/AddCategory';
 import AddToCart from './pages/users/checkout/AddToCart';
 import './App.css';
+import CheckoutForm from './pages/users/checkout/CheckoutForm';
 
 
 export function App() {
@@ -46,7 +47,7 @@ export function App() {
   }, []);
 
   return (
-    <Layout>
+    <Layout >
       <Routes>
         <Route path='/' element={<Home></Home>} />
         <Route path="/catalog" element={<ProductList />} />
@@ -93,6 +94,16 @@ export function App() {
           element={
             <ProtectedRoute
               element={<Reorder />}
+              role={["ROLE_USER"]}
+            />
+          }
+        />
+
+        <Route
+          path='/checkout'
+          element={
+            <ProtectedRoute
+              element={<CheckoutForm/>}
               role={["ROLE_USER"]}
             />
           }

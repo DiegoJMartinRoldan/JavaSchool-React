@@ -110,7 +110,7 @@ function Register() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-4">
       <ToastContainer />
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
@@ -160,7 +160,7 @@ function Register() {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn register-button">
           Register
         </button>
 

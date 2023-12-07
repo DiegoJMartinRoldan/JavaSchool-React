@@ -4,7 +4,7 @@ import useAuth from '../../authentication/customHooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import useCustomAxios from '../../authentication/customHooks/useCustomAxios';
 import DeleteAddress from '../clientsAddress/DeleteAddress';
-
+import '../profile/css/UserProfile.css';
 
 
 
@@ -13,7 +13,7 @@ function UserProfile() {
 
   const [client, setClient] = useState({});
 
-  const { auth} = useAuth(Context);
+  const { auth } = useAuth(Context);
   const customAxios = useCustomAxios();
   const { updateTrigger, setUpdateTrigger } = useAuth(Context);
   const [deleteAddressId, setDeleteAddressId] = useState(null);
@@ -100,52 +100,64 @@ function UserProfile() {
 
 
   return (
-    <div>
-      <h1>Hi {client.name}!</h1>
-      <h5>Personal Data:</h5>
-      <p>Surname: {client.surname}</p>
-      <p>Date of Birth: {client.dateOfBirth}</p>
-      <p>Email: {client.email}</p>
-      <button
-        onClick={() => navigate(`/userInformationChange/${client.id}`, {
-          state: {
-            handleClientUpdate: handleClientUpdate,
-            setUpdateTrigger: setUpdateTrigger,
-          }
-        })}
-      >
-        Change personal data
-      </button>
+    <div className="p-profile-container">
+      <div className="p-profile-row">
+        <div className="p-profile-column">
+          <h1 className="p-profile-heading">Hi {client.name}!</h1>
+          <h5>Personal Data:</h5>
+          <p><strong>Surname:</strong> {client.surname}</p>
+          <p><strong>Date of Birth:</strong> {client.dateOfBirth}</p>
+          <p><strong>Email:</strong> {client.email}</p>
+          <button
+            onClick={() => navigate(`/userInformationChange/${client.id}`, {
+              state: {
+                handleClientUpdate: handleClientUpdate,
+                setUpdateTrigger: setUpdateTrigger,
+              }
+            })}
+            className="personal-data-p-profile-btn btn "
+          >
+            Change personal data
+          </button>
+          <button onClick={() => navigate('/passwordChange')} className="change-password-p-profile-btn btn">
+            Change Password
+          </button>
+        </div>
+      </div>
 
-      <button onClick={() => navigate('/passwordChange')}>
-        Change Password
-      </button>
+      <div className="p-profile-row mt-4">
+        <div className="p-profile-column">
+          <h5>Addresses:</h5>
+          {client.clientsAddresses && client.clientsAddresses.map((address) => (
+            <div key={address.id} className="p-profile-card">
+              <p>
+                {address.country}, {address.city}, {address.postalCode}, {address.street}, {address.home}, {address.apartment}
+              </p>
+              <button onClick={() => {
+                setDeleteAddressId(address.id);
+                setShowConfirmation(true);
+              }} className="p-profile-btn btn">
+                Delete Address
+              </button>
+            </div>
+          ))}
+          <button onClick={() => navigate('/clientAddress')} className="create-p-profile-btn btn ">Create new Address</button>
+        </div>
 
-      <p>------------------</p>
-
-      <ul>
-        <h5>Addresses:</h5>
-
-        {client.clientsAddresses && client.clientsAddresses.map((address) => (
-          <li key={address.id}>
-            {address.country},
-            {address.city},
-            {address.postalCode},
-            {address.street},
-            {address.home},
-            {address.apartment} <br />
-
-            {/*  <NavLink to='/updateAddress'>Update address</NavLink><br />  */}
-            <button onClick={() => {
-              setDeleteAddressId(address.id);
-              setShowConfirmation(true);
-            }}>
-              Delete Address
-            </button>
-          </li>
-        ))}
-
-      </ul>
+        <div className="p-profile-column">
+          <h5>Orders:</h5>
+          {client.orders && client.orders.map((allOrders) => (
+            <div key={allOrders.id} className="p-profile-card">
+              <p>
+                {allOrders.paymentMethod}, {allOrders.deliveryMethod}, {allOrders.paymentStatus}, {allOrders.orderStatus}, {allOrders.orderDate}
+              </p>
+              <button onClick={() => navigate(`/reorder/${allOrders.id}`)} className="reorder-p-profile-btn btn ">
+                Reorder
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {deleteAddressId && (
         <DeleteAddress
@@ -155,45 +167,15 @@ function UserProfile() {
           onDelete={(deletedId) => {
             setClient((prevClient) => ({
               ...prevClient,
-              clientsAddresses: prevClient.clientsAddresses.filter(
-                (address) => address.id !== deletedId
-              ),
+              clientsAddresses: prevClient.clientsAddresses.filter((address) => address.id !== deletedId),
             }));
             setDeleteAddressId(null);
             setShowConfirmation(false);
           }}
         />
       )}
-      <button onClick={() => navigate('/clientAddress')}>Create new Address</button>
-
-
-
-      <p>--------------</p>
-
-      <ul>
-        <h5>Orders:</h5>
-        {client.orders && client.orders.map((allOrders) => (
-
-          <li key={allOrders.id}>
-            {allOrders.paymentMethod},
-            {allOrders.deliveryMethod},
-            {allOrders.paymentStatus},
-            {allOrders.orderStatus},
-            {allOrders.orderDate},
-            <button onClick={() => navigate(`/reorder/${allOrders.id}`)}>Reorder</button>
-          </li>
-
-        ))}
-      </ul>
-      {/* <NavLink >Delete Order</NavLink><br />*/}
-      <p>--------------</p>
-
-
-
-
     </div>
   );
-
 }
 
 export default UserProfile;
