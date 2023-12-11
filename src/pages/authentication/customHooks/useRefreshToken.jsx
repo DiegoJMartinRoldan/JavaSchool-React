@@ -7,9 +7,6 @@ import { useNavigate } from 'react-router-dom';
 const useRefreshToken = () => {
     const { auth, updateAuth} = useContext(Context);
 
-
-
-
     //Api call -  Refresh Token method
     const refresh = async () => {
         try {

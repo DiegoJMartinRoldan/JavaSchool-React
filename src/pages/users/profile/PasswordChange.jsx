@@ -3,6 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import useCustomAxios from '../../authentication/customHooks/useCustomAxios';
 import useAuth from '../../authentication/customHooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import '../profile/css/PasswordChange.css'
 
 function PasswordChange() {
   const [email, setEmail] = useState('');
@@ -79,7 +80,7 @@ function PasswordChange() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="passwordchange container mt-5">
       <ToastContainer />
       <h2>Change Password</h2>
       <form onSubmit={handleSubmit}>

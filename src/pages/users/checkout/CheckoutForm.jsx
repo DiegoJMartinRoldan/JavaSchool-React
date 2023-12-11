@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../../authentication/customHooks/useAuth';
 import Context from '../../authentication/customHooks/Auth';
 import useCustomAxios from '../../authentication/customHooks/useCustomAxios';
@@ -11,9 +11,39 @@ function CheckoutForm() {
   const [deliveryMethod, setDeliveryMethod] = useState('');
   const { auth } = useAuth(Context);
   const customAxios = useCustomAxios();
-  const [pendingOrders, setPendingOrders] = useState([]);
+  const [clientAddress, setClientAddress] = useState([]);
+  const orderDate = new Date();
   const navigate = useNavigate();
 
+
+
+  const { state } = useLocation();
+
+
+  // Success
+  const handleSuccess = () => {
+    toast.success('Purchase completed successfully', {
+      position: 'top-center',
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      progress: undefined,
+      style: {
+        background: 'green',
+        color: 'white',
+        fontSize: '18px',
+      },
+      progressBarStyle: {
+        background: 'blue',
+      },
+    });
+
+    setTimeout(() => {
+      navigate('/');
+    }, 1000);
+  };
+
+  // Get client id to get order -- Obtengo: 1. ClientAddress Id , 2. Pending Order
   useEffect(() => {
     const getClientByIdUrl = `http://localhost:8080/client/getby/${auth.id}`;
 
@@ -26,9 +56,14 @@ function CheckoutForm() {
       .then((response) => {
         const clientData = response.data;
 
-        const orders = clientData.orders.filter(order => order.orderStatus === "PENDING").map(order => order.id);
+                                                  console.log ('clientData: ', clientData);
 
-        setPendingOrders(orders);
+
+        const addressIds = clientData.clientsAddresses.map((address) => address.id);
+        setClientAddress(addressIds);
+
+
+                                                   console.log('address Id', addressIds);
       })
       .catch((error) => {
         if (error.response && error.response.status === 403) {
@@ -39,14 +74,9 @@ function CheckoutForm() {
       });
   }, [auth.id, auth.accessToken]);
 
-  const handleSuccess = () => {
-    toast.success('Compra efectuada correctamente');
 
-    setTimeout(() => {
-      navigate('/');
-    }, 1000);
-  };
 
+  // Validation
   const isValidate = () => {
     let isAdded = true;
     let errorMessage = 'Please enter the value in';
@@ -67,64 +97,130 @@ function CheckoutForm() {
     return isAdded;
   };
 
-  const handleSubmit = (event) => {
+  // Submit para comprar
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const endpoint = 'http://localhost:8080/orders/create';
+    if (isValidate()) {
+      try {
+        const endpoint = 'http://localhost:8080/orders/create';
 
-    // Obtén la primera orden pendiente (podrías ajustar esto según tu lógica específica)
-    const pendingOrderId = pendingOrders.length > 0 ? pendingOrders[0] : null;
+        const makeOrder = {
+          paymentMethod: paymentMethod,
+          deliveryMethod: deliveryMethod,
+          paymentStatus: 'COMPLETED',
+          orderStatus: 'PACKED',
+          orderDate: orderDate,
+          client: {
+            id: auth.id,
+          },
+          clientsAddress: {
+            id: clientAddress[0],
+          },
+        };
 
-    // Verifica si hay una orden pendiente
-    if (pendingOrderId) {
-      // Realiza una solicitud para obtener los detalles de la orden pendiente
-      const getOrderDetailsUrl = `http://localhost:8080/orders/getby/${pendingOrderId}`;
+                                                     console.log('order body', makeOrder);
 
-      axios.get(getOrderDetailsUrl, {
-        headers: {
-          Authorization: `Bearer ${auth.accessToken}`,
-        },
-      })
-      .then((orderResponse) => {
-        const orderDetails = orderResponse.data;
-
-        // Actualiza los campos necesarios en orderDetails
-        orderDetails.orderStatus = 'PACKED';  // Puedes actualizar otros campos si es necesario
-        orderDetails.paymentMethod = paymentMethod;
-        orderDetails.deliveryMethod = deliveryMethod;
-        // Asegúrate de que paymentMethod y deliveryMethod estén definidos
-
-        // Realiza la solicitud de creación de la orden con los datos actualizados
-        axios.post(endpoint, orderDetails, {
+        // Crear la orden
+        const orderResponse = await axios.post(endpoint, makeOrder, {
           headers: {
             Authorization: `Bearer ${auth.accessToken}`,
+            'Content-Type': 'application/json',
           },
-        })
-        .then((response) => {
-          handleSuccess();
-          console.log(response);
-        })
-        .catch((error) => {
-          toast.error('Try again.');
-          console.error('Error', error);
-        });
-      })
-      .catch((error) => {
-        console.error('Error getting order details:', error);
-        console.log('Error response:', error.response); 
-        console.log('Error response:', error.response.data);
 
-      });
-      
-    } else {
-      console.warn('No pending orders found');
+        });
+        
+        console.log('Order Response Data:', orderResponse.data);
+
+        const orderId = orderResponse.data.id;
+        console.log('Order Id:', orderId);
+
+
+                                                                console.log('order Id', orderId);
+
+        // Recorrer y crear las relaciones OrderHasProduct
+        for (let i = 0; i < state.shoppingCart.length; i++) {
+          const orderHasProductData = {
+            orders: {
+              id: orderId,
+            },
+            product: {
+              id: state.shoppingCart[i].id,
+            },
+            quantity: state.orderHasProduct[i].quantity,
+          };
+
+                                                              console.log('OHP', orderHasProductData);
+
+          const orderHasProductEndpoint = 'http://localhost:8080/orderHasProduct/create';
+
+          await axios.post(orderHasProductEndpoint, orderHasProductData, {
+            headers: {
+              Authorization: `Bearer ${auth.accessToken}`,
+              'Content-Type': 'application/json',
+            },
+          });
+        }
+
+        const clearCartEndpoint = 'http://localhost:8080/client/clearCart';
+        const clearCartBody = {
+          userId: auth.id,
+        };
+  
+        await axios.post(clearCartEndpoint, clearCartBody, {
+          headers: {
+            Authorization: `Bearer ${auth.accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        // Borrar la cookie en el lado del cliente
+        document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/client;";
+
+        console.log(document.cookie);
+  
+        handleSuccess();
+      } catch (error) {
+        toast.error('Try again.');
+        console.error('Error', error);
+      }
     }
   };
+
+
+  //Render Products-quantities
+  const renderProductsAndQuantity = () => {
+    if (state && state.shoppingCart && state.total && state.orderHasProduct) {
+      const { shoppingCart, total, orderHasProduct } = state;
+      return (
+        <div>
+          <p>Shopping Cart:</p>
+          <ul>
+            {shoppingCart.map((product, index) => (
+              <li key={product.id}>
+                {product.title} - Quantity: {orderHasProduct[index].quantity}
+              </li>
+            ))}
+          </ul>
+          <p>Total: {total} €</p>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
+
+
+
+
 
   return (
     <div className="container mt-5">
       <ToastContainer></ToastContainer>
-      <h2>Add Your Address</h2>
+      <h2>Checkout</h2>
+
+      {renderProductsAndQuantity()}
+
       <form onSubmit={handleSubmit} className="row g-3">
         <div className="col-md-6">
           <label className="form-label">Payment Method</label>
@@ -154,7 +250,7 @@ function CheckoutForm() {
         </div>
       </form>
     </div>
-  )
+  );
 }
 
 export default CheckoutForm;

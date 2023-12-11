@@ -23,11 +23,10 @@ import Products from './pages/employees/Products';
 import OrderHistoryEmployees from './pages/employees/OrderHistoryEmployees';
 import DeleteProduct from './pages/employees/DeleteProduct';
 import UpdateProduct from './pages/employees/UpdateProduct';
-import AddCategory from './pages/employees/AddCategory';
-import AddToCart from './pages/users/checkout/AddToCart';
 import './App.css';
 import CheckoutForm from './pages/users/checkout/CheckoutForm';
-
+import UpdateAddress from './pages/users/clientsAddress/UpdateAddress';
+import ShoppingCartSidebar from './pages/users/checkout/ShoppingCartSidebar';
 
 export function App() {
 
@@ -57,7 +56,7 @@ export function App() {
         <Route path="/singleProductInfo/:id" element={<SingleProductInfo />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/clientAddress" element={<AddAddress />} />
-        <Route path="/addToCart" element={<AddToCart />} />
+        <Route path="/sidebar" element={<ShoppingCartSidebar />} />
 
         <Route
           path="/profile"
@@ -104,6 +103,16 @@ export function App() {
           element={
             <ProtectedRoute
               element={<CheckoutForm/>}
+              role={["ROLE_USER"]}
+            />
+          }
+        />
+
+        <Route
+          path='/updateAddress/:id'
+          element={
+            <ProtectedRoute
+              element={<UpdateAddress/>}
               role={["ROLE_USER"]}
             />
           }
@@ -164,7 +173,7 @@ export function App() {
         />
 
         <Route
-          path="/updateProduct"
+          path="/updateProduct/:id"
           element={
             <ProtectedRoute
               element={<UpdateProduct />}
@@ -173,15 +182,7 @@ export function App() {
           }
         />
 
-        <Route
-          path="/addCategory"
-          element={
-            <ProtectedRoute
-              element={<AddCategory />}
-              role={["ROLE_ADMIN"]}
-            />
-          }
-        />
+      
 
 
 

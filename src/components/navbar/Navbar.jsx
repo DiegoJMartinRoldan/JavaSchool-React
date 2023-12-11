@@ -5,6 +5,8 @@ import { NavLink } from "../NavLink";
 import useAuth from "../../pages/authentication/customHooks/useAuth";
 import Context from "../../pages/authentication/customHooks/Auth";
 import { useNavigate } from "react-router-dom";
+import ShoppingCartSidebar from "../../pages/users/checkout/ShoppingCartSidebar";
+import ProductList from "../../pages/users/catalog/ProductList";
 
 import { BsCart2 } from "react-icons/bs";
 import { HiOutlineBars3 } from "react-icons/hi2";
@@ -30,9 +32,24 @@ function Navbar() {
   const { auth, logout } = useContext(Context);
   const navigate = useNavigate();
 
-
   const IsUser = auth.accessToken && auth.role === "ROLE_USER";
   const IsAdmin = auth.accessToken && auth.role === "ROLE_ADMIN";
+
+
+  //Open-close state
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  //ProductList
+  const [recentlyAddedProduct, setRecentlyAddedProduct] = useState(null);
+
+  const handleSidebarToggle = () => {
+    setIsSidebarOpen(prev => !prev); 
+  };
+
+  //Open side bar for ProductList
+  const openSidebar = () => {
+    setIsSidebarOpen(true);
+  };
 
 
   const handleLogout = () => {
@@ -103,11 +120,15 @@ function Navbar() {
       </div>
 
 
-      <div className="shoppingCarticon">
-        <NavLink to="/shoppingCart">
-          <ShoppingCartIcon className="cart" />
-        </NavLink>
+      <div className="shoppingCarticon" onClick={handleSidebarToggle}>
+        <ShoppingCartIcon className="cart" />
       </div>
+
+
+      <ShoppingCartSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
+
+
 
     </nav >
   );

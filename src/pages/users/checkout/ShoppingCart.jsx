@@ -6,60 +6,69 @@ import useAuth from '../../authentication/customHooks/useAuth';
 import Context from '../../authentication/customHooks/Auth';
 import { useNavigate } from 'react-router-dom';
 import '../checkout/css/ShoppingCart.css';
+import useShoppingCartSidebar from '../../authentication/customHooks/useShoppingCartSidebar';
+
+
 
 function ShoppingCart() {
   const [products, setProducts] = useState([]);
   const [orderHasProduct, setOrderHasProduct] = useState([]);
-  const [deleteProduct, setDeleteProduct] = useState(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
   const { auth } = useAuth(Context);
   const navigate = useNavigate();
+  const {handleDeleteProductFromCart} = useShoppingCartSidebar();
 
+
+  //Shopping Cart
   const fetchCart = async () => {
     try {
       let response;
 
-      if (auth.accessToken) {
-        // Authenticated
-        response = await axios.get('http://localhost:8080/client/cart', {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${auth.accessToken}`,
-          },
-        });
-      } else {
-        // Not Authenticated
-        response = await axios.get('http://localhost:8080/client/cart', {
-          withCredentials: true,
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-        });
-      }
+      response = await axios.get('http://localhost:8080/client/cart', {
+        headers: auth.accessToken ? {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.accessToken}`,
+        } : {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
+
 
       const cartResponse = response.data;
 
-      // Product Filter
-      const filteredProducts = auth.isAuthenticated
-        ? cartResponse.filter(item => item.authenticated === true)
-        : cartResponse.filter(item => item.authenticated !== true);
-
-      const productsArray = filteredProducts.map(item => item.productDTO);
-      const orderHasProductsArray = filteredProducts.map(item => ({ id: item.productDTO.id, quantity: item.quantity }));
+      const productsArray = cartResponse.map(item => item.productDTO);
+      const orderHasProductsArray = cartResponse.map(item => ({ id: item.productDTO.id, quantity: item.quantity }));
 
       setProducts(productsArray);
       setOrderHasProduct(orderHasProductsArray);
+
+      let totalPrice = 0;
+      for (let i = 0; i < productsArray.length; i++) {
+        totalPrice += productsArray[i].price * orderHasProductsArray[i].quantity;
+      }
+
+      setTotalPrice(totalPrice);
     } catch (error) {
       console.error('Error fetching cart:', error);
     }
   };
 
+
   useEffect(() => {
     fetchCart();
   }, [auth.id, auth.accessToken]);
-  
+
+
+
+
+
+
+
+
+
   return (
     <div className="shopping-cart-container">
       <h2 className="shopping-cart-heading">Shopping Cart</h2>
@@ -91,40 +100,27 @@ function ShoppingCart() {
               <td>{product.parameters}</td>
               <td>{orderHasProduct[index].quantity}</td>
               <td>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => {
-                    setDeleteProduct(product.id);
-                    setShowConfirmation(true);
-                  }}
-                >
-                  Delete
-                </button>
+              
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {deleteProduct && (
-        <DeleteProduct
-          deleteProduct={deleteProduct}
-          showConfirmation={showConfirmation}
-          onCancel={() => setShowConfirmation(false)}
-          onDelete={(deletedId) => {
-            // Asegúrate de actualizar el estado de productos aquí
-            // setProducts((prevProducts) =>
-            //   prevProducts.filter((product) => product.id !== deletedId)
-            // );
-            setDeleteProduct(null);
-            setShowConfirmation(false);
-          }}
-        />
-      )}
+      
 
-      <button className="btn cart-checkout-btn" onClick={() => navigate('/checkout')}>
+      <p>Total Price: {totalPrice} €</p>
+
+      <button
+        className="btn cart-checkout-btn"
+        onClick={() => navigate('/checkout', { state: { shoppingCart: products, total: totalPrice, orderHasProduct } })}
+      >
         Go to Checkout
       </button>
+
+
+
+
     </div>
   );
 }

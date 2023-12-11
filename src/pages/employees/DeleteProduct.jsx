@@ -14,7 +14,11 @@ function DeleteProduct({ deleteProduct, onDelete,  onCancel, showConfirmation })
         const endpoint = `http://localhost:8080/product/delete/${deleteProduct}`;
 
         try {
-            await axios.delete(endpoint);
+            await axios.delete(endpoint,{
+                headers: {
+                    Authorization: `Bearer ${auth.accessToken}`
+                }
+            } );
             onDelete(deleteProduct);
             console.log('Product deleted successfully');
         } catch (error) {

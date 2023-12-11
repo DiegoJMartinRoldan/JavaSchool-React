@@ -1,10 +1,13 @@
-.p-profile-container {
-  max-width: 2000px;
+.user-profile-container-unique-user-profile-container {
+  width: 2000px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ddd;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding-bottom: 306px;
+  
+ 
 
 }
 
@@ -14,14 +17,14 @@
   justify-content: space-between;
   margin-bottom: 20px;
 
+
+
 }
 
 .p-profile-column {
   flex-basis: calc(50% - 10px);
   margin-bottom: 20px;
 
-
- 
 }
 
 .p-profile-heading {
@@ -30,18 +33,18 @@
   color: #070707;
   margin-bottom: 20px;
 
-
 }
 
 .p-profile-btn {
   padding: 8px 16px;
   font-size: 16px;
   margin-right: 10px;
-  margin-bottom: 10px;
-  margin: 10px auto;
   display: block;
   background-color: rgb(248, 100, 100);
   width: 200px;
+
+
+  
 
 }
 .p-profile-btn:hover {
@@ -80,8 +83,6 @@
   padding: 8px 16px;
   font-size: 16px;
   margin-right: 10px;
-  margin-bottom: 10px;
-  margin: 10px auto;
   display: block;
   background-color: rgb(0, 255, 128);
   width: 200px;
@@ -128,4 +129,19 @@
   width: 200px;
 
 
+}
+
+.update-address-btn{
+  padding: 8px 16px;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(92, 240, 245);
+  width: 200px;
+}
+
+.update-address-btn:hover{
+
+  background-color: rgb(88, 176, 235);
+  width: 200px;
 }

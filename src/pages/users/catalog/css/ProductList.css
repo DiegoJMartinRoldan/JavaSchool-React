@@ -1,6 +1,6 @@
 .product-list-container {
   padding: 20px; 
-  border: solid red;
+
 
 }
 
@@ -15,7 +15,8 @@
 
 
 .catalog-product-image {
-  width: 100%; 
+  width: 50%; 
+
   height: 180px; 
   object-fit: cover;
   object-position: center;
@@ -154,4 +155,30 @@
   margin-top: 40px;
 
  
+}
+
+.category-dropdown {
+  margin-bottom: 15px;
+}
+
+.category-dropdown select {
+  width: 20%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.category-dropdown select:hover,
+.category-dropdown select:focus {
+  border-color: #007bff; 
+}
+
+
+.category-dropdown select option {
+  font-size: 14px;
 }

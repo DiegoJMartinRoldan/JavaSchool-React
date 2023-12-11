@@ -1,0 +1,128 @@
+/* Estilos para el sidebar del carrito de compras */
+.shopping-cart-sidebar-custom {
+    position: fixed; /* Fija el sidebar en la ventana */
+    top: 56px; /* Alinea el borde superior del sidebar con el borde superior de la ventana */
+    right: 0; /* Alinea el borde derecho del sidebar con el borde derecho de la ventana */
+    width: 300px; /* Establece el ancho del sidebar */
+    height: 100%; /* Ocupa toda la altura de la ventana hacia abajo */
+    background-color: #ffffff; /* Color de fondo blanco */
+    padding: 30px; /* Espaciado interno dentro del sidebar */
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1); /* Sombra en el borde izquierdo */
+    overflow-y: auto; /* Permite el desplazamiento vertical si el contenido es demasiado largo */
+    z-index: 100; /* Capa z para controlar la superposición con otros elementos */
+    display: none; /* Oculta el sidebar por defecto */
+    transition: transform 0.3s ease, visibility 0.3s ease;
+    transform: translateX(100%);
+  }
+  
+  /* Estilos específicos cuando el sidebar está abierto */
+  .shopping-cart-sidebar-custom.open {
+    display: block; /* Muestra el sidebar cuando está abierto */
+    visibility: visible;
+    transform: translateX(0);
+    overflow-y: auto;
+  }
+  
+  /* Estilos para el encabezado (h3) dentro del sidebar */
+  .shopping-cart-sidebar-custom h3 {
+    font-size: 1.5rem; /* Tamaño de fuente */
+    margin-bottom: 20px; /* Margen inferior */
+
+    
+  }
+  
+  /* Estilos para la lista no ordenada (ul) dentro del sidebar */
+  .shopping-cart-sidebar-custom ul {
+    list-style-type: none; /* Elimina los puntos de la lista */
+    padding: 0; /* Elimina el relleno predeterminado de la lista */
+    
+  }
+  
+  /* Estilos para cada elemento de la lista (li) dentro del sidebar */
+  .shopping-cart-sidebar-custom li {
+    margin-bottom: 20px; /* Margen inferior entre elementos de la lista */
+ 
+    border-radius: 10px;
+  }
+  
+  /* Estilos para los botones dentro del sidebar */
+  .shopping-cart-sidebar-custom button {
+    background-color: #dc3545; /* Color de fondo rojo oscuro */
+    color: #fff; /* Color del texto blanco */
+    border-radius: 5px;
+    border-color: #dc3545;
+    padding: 5px 10px; /* Relleno interno del botón */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    font-size: 0.8rem; /* Tamaño de fuente más pequeño */
+  }
+  
+  /* Estilos para los párrafos (p) dentro del sidebar */
+  .shopping-cart-sidebar-custom p {
+    margin-top: 15px; /* Margen superior para separar de otros elementos */
+    font-size: 1.2rem; /* Tamaño de fuente */
+  }
+  
+  /* Ajustes para el contenido principal en la página */
+  .content-wrapper {
+    margin-right: 0; /* Establece el margen derecho a cero cuando el sidebar está cerrado */
+    transition: margin-right 0.3s ease; /* Agrega una transición suave al ajustar el margen derecho */
+    transition: margin-right 0.3s ease;
+  }
+  
+  /* Estilos específicos cuando el sidebar está abierto */
+  .content-container.sidebar-open {
+    margin-right: 300px; /* Ajusta el margen derecho cuando el sidebar está abierto */
+    transition: margin-right 0.3s ease; /* Agrega una transición suave al ajustar el margen derecho */
+  }
+  /* Estilos específicos cuando el sidebar está abierto */
+.shopping-cart-sidebar-custom.open + .content-wrapper {
+    margin-right: 300px;
+    transition: margin-right 0.3s ease;
+}
+
+.product-image-sidebar{
+    width: 150px;
+    align-items: center;
+    border-radius: 15px;
+    margin: 0 auto; 
+    display: block; 
+    margin-bottom: 5px;
+}
+
+.shopping-cart-sidebar-header{
+    text-align: center;
+    margin: 0 auto; 
+    display: block;
+
+
+   
+
+}
+
+.shopping-cart-sidebar-delete{
+
+    margin: 0 auto; 
+    display: block;
+
+    
+    border: solid black;
+}
+.shopping-cart-sidebar-total{
+    margin-top: auto;
+
+    
+}
+
+.shopping-cart-sidebar-checkout{
+
+    background-color: blue;
+    
+
+}
+.shopping-cart-sidebar-shoppingcart{
+
+    background-color: green;
+    border: solid black;
+
+   
+}

@@ -6,56 +6,40 @@ import useCustomAxios from '../../authentication/customHooks/useCustomAxios';
 import DeleteAddress from '../clientsAddress/DeleteAddress';
 import '../profile/css/UserProfile.css';
 
-
-
-
 function UserProfile() {
-
   const [client, setClient] = useState({});
-
-  const { auth } = useAuth(Context);
-  const customAxios = useCustomAxios();
-  const { updateTrigger, setUpdateTrigger } = useAuth(Context);
   const [deleteAddressId, setDeleteAddressId] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
+  const { auth, updateUser } = useAuth(Context);
+  const customAxios = useCustomAxios();
 
-  //Get the client form the auth context by id
-  useEffect(() => {
-    //console.log(auth.id, auth.accessToken)
-    const getClientByIdUrl = `/client/getby/${auth.id}`;
-
-    customAxios
-      .get(getClientByIdUrl, {
+  const fetchClientData = async () => {
+    try {
+      const response = await customAxios.get(`/client/getby/${auth.id}`, {
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
         },
-      })
-      .then((response) => {
-        const clientData = response.data;
-        setClient(clientData);
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          console.log('Error 403');
-        } else {
-          console.error('Error getting client' + error);
-        }
       });
-  }, [auth.id, auth.accessToken, updateTrigger]);
-
-
-  const handleClientUpdate = (updatedClient) => {
-    setClient(updatedClient);
-    setUpdateTrigger(prevState => !prevState);
-
-
+      const clientData = response.data;
+      setClient(clientData);
+                                                      console.log('response' , response.data)
+                                                      console.log('cambios', clientData)
+      
+    } catch (error) {
+      console.error('Error getting client' + error);
+    }
   };
 
 
+  useEffect(() => {
+     console.log("updateUser changed. Fetching client data...");
+    if (auth.accessToken) {
+      fetchClientData();
+    }
+  }, [updateUser]);
 
 
-  //Get client Addresses
   useEffect(() => {
     if (client.clientsAddresses) {
       const addressPromises = client.clientsAddresses.map((address) =>
@@ -71,12 +55,9 @@ function UserProfile() {
         });
     }
 
+    // Nota: No es necesario imprimir el estado aquí, ya que puede no estar actualizado inmediatamente después de esta llamada.
+  }, [client.clientsAddresses, customAxios]);
 
-    console.log('Client Addresses:', client.clientsAddresses);
-  }, [client.clientsAddresses]);
-
-
-  //Get client Orders
   useEffect(() => {
     if (client.orders) {
       const orderPromises = client.orders.map((allOrders) =>
@@ -85,22 +66,16 @@ function UserProfile() {
       Promise.all(orderPromises)
         .then((orderResponses) => {
           const clientOrders = orderResponses.map((response) => response.data);
-          //console.log(clientOrders);
-
+          // Puedes actualizar el estado con los datos de las órdenes si es necesario
         })
         .catch((error) => {
           console.error('Error getting orders: ' + error);
         });
     }
-  }, [client.orders]);
-
-  console.log(client.clientsAddresses)
-
-
-
+  }, [client.orders, customAxios]);
 
   return (
-    <div className="p-profile-container">
+    <div className="user-profile-container-unique-user-profile-container">
       <div className="p-profile-row">
         <div className="p-profile-column">
           <h1 className="p-profile-heading">Hi {client.name}!</h1>
@@ -110,10 +85,6 @@ function UserProfile() {
           <p><strong>Email:</strong> {client.email}</p>
           <button
             onClick={() => navigate(`/userInformationChange/${client.id}`, {
-              state: {
-                handleClientUpdate: handleClientUpdate,
-                setUpdateTrigger: setUpdateTrigger,
-              }
             })}
             className="personal-data-p-profile-btn btn "
           >
@@ -127,35 +98,53 @@ function UserProfile() {
 
       <div className="p-profile-row mt-4">
         <div className="p-profile-column">
-          <h5>Addresses:</h5>
+          <h5>Address:</h5>
+
           {client.clientsAddresses && client.clientsAddresses.map((address) => (
             <div key={address.id} className="p-profile-card">
-              <p>
-                {address.country}, {address.city}, {address.postalCode}, {address.street}, {address.home}, {address.apartment}
-              </p>
+              <p><strong>Country:</strong> {address.country}</p>
+              <p><strong>City:</strong> {address.city}</p>
+              <p><strong>Postal Code:</strong> {address.postalCode}</p>
+              <p><strong>Street:</strong> {address.street}</p>
+              <p><strong>Home:</strong> {address.home}</p>
+              <p><strong>Apartment:</strong> {address.apartment}</p>
+
               <button onClick={() => {
                 setDeleteAddressId(address.id);
                 setShowConfirmation(true);
               }} className="p-profile-btn btn">
                 Delete Address
               </button>
+
+              <button
+                className='update-address-btn btn'
+                onClick={() => navigate(`/updateAddress/${address.id}`)}
+              >
+                Update Address
+              </button>
             </div>
           ))}
+
           <button onClick={() => navigate('/clientAddress')} className="create-p-profile-btn btn ">Create new Address</button>
         </div>
 
         <div className="p-profile-column">
           <h5>Orders:</h5>
+
           {client.orders && client.orders.map((allOrders) => (
             <div key={allOrders.id} className="p-profile-card">
-              <p>
-                {allOrders.paymentMethod}, {allOrders.deliveryMethod}, {allOrders.paymentStatus}, {allOrders.orderStatus}, {allOrders.orderDate}
-              </p>
-              <button onClick={() => navigate(`/reorder/${allOrders.id}`)} className="reorder-p-profile-btn btn ">
+              <p><strong>Payment Method:</strong> {allOrders.paymentMethod}</p>
+              <p><strong>Delivery Method:</strong> {allOrders.deliveryMethod}</p>
+              <p><strong>Payment Status:</strong> {allOrders.paymentStatus}</p>
+              <p><strong>Order Status:</strong> {allOrders.orderStatus}</p>
+              <p><strong>Order Date:</strong> {allOrders.orderDate}</p>
+
+              <button onClick={() => navigate(`/reorder/${allOrders.id}`)} className="reorder-p-profile-btn btn">
                 Reorder
               </button>
             </div>
           ))}
+
         </div>
       </div>
 

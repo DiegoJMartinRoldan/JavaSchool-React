@@ -1,14 +1,20 @@
 /* Login.css */
 .login-container {
-  max-width: 400px; /* Ancho máximo del contenedor */
-  margin: 0 auto; /* Centrar el contenedor horizontalmente */
-  background-color: #f9f9f9; /* Color de fondo */
-  padding: 40px; /* Relleno dentro del contenedor */
-  border-radius: 10px; /* Radio de borde para esquinas redondeadas */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para un efecto de profundidad sutil */
-  padding-bottom: 30px; /* Relleno adicional en la parte inferior */
-  margin-bottom: 10px; /* Margen adicional en la parte inferior */
+  max-width: 400px;
+  margin: auto; 
+  background-color: #f9f9f9;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding-bottom: 0px;
+  margin-bottom: 10px;
+  position: absolute; 
+  top: 35%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
 }
+
+
 
 
 .custom-input {

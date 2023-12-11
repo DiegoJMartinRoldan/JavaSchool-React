@@ -4,7 +4,7 @@
     justify-content: center;
     height: 70vh; 
 
-    border: solid red;
+    
 
   }
   
@@ -19,6 +19,9 @@
     flex: 1;
     color: #000000;
     padding: 20px;
+
+  
+
    
 
   }
@@ -27,6 +30,8 @@
   .text h1 {
     font-size: 32px;
     margin-bottom: 10px;
+
+    text-align: center;
     
   }
   
@@ -35,6 +40,10 @@
     font-size: 16px;
     margin-bottom: 20px;
     font-weight: bold;
+
+    text-align: center;
+
+    
 
   }
   
@@ -62,6 +71,11 @@
     outline-color: deeppink;
     transition: filter 250ms;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+ 
   }
   
   .shadow {

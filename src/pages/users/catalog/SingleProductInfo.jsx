@@ -131,11 +131,11 @@ function SingleProductInfo() {
         <div className="col-md-6">
           <h1 className="product-info-heading">Product Info:</h1>
           <p className="product-info-item"><strong>Name:</strong> {products.title}</p>
-          <p className="product-info-item"><strong>Price:</strong> {products.price}$</p>
+          <p className="product-info-item"><strong>Price:</strong> {products.price} €</p>
           <p className="product-info-item"><strong>Category:</strong> {products.category}</p>
           <p className="product-info-item"><strong>Parameters:</strong> {products.parameters}</p>
           <p className="product-info-item"><strong>Weight:</strong> {products.weight}g</p>
-          <p className="product-info-item"><strong>Volume:</strong> {products.volume}</p>
+          <p className="product-info-item"><strong>Volume:</strong> {products.volume} cm³</p>
           <p className="product-info-item"><strong>Quantity Stock:</strong> {products.quantityStock} units</p>
         </div>
         <div className="col-md-6">

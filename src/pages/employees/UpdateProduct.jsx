@@ -1,14 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import useAuth from '../authentication/customHooks/useAuth';
 import Context from '../authentication/customHooks/Auth';
 import useCustomAxios from '../authentication/customHooks/useCustomAxios';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
-function UpdateProduct(props) {
+import axios from 'axios';
 
-
-
+function UpdateProduct() {
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
@@ -16,37 +14,30 @@ function UpdateProduct(props) {
     const [weight, setWeight] = useState('');
     const [volume, setVolume] = useState('');
     const [image, setImage] = useState();
-    const customAxios = useCustomAxios();
     const [quantityStock, setQuantityStock] = useState('');
-    const { productId } = useParams();
     const { auth } = useAuth(Context);
-    const { id } = useParams();
-
-
+    const { id } = useParams(); 
     const navigate = useNavigate();
-
 
     const handleSuccess = () => {
         toast.success('Product updated successfully');
-
         setTimeout(() => {
             navigate('/adminProducts');
         }, 1000);
-    }
+    };
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
-    
+
         reader.onloadend = () => {
-          setImage(reader.result);
+            setImage(reader.result);
         };
-    
+
         if (file) {
-          reader.readAsDataURL(file);
+            reader.readAsDataURL(file);
         }
-      };
-    
+    };
 
 
     const isValidate = () => {
@@ -96,16 +87,15 @@ function UpdateProduct(props) {
 
 
     const handleUpdate = (updatedProduct) => {
-        if (handleProductUpdate) {
-            productId(updatedProduct);
-            handleSuccess();
-        }
-    }
+        console.log('Product updated successfully:', updatedProduct);
+        handleSuccess();
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         const productData = {
+            id: id,
             title: title,
             price: price,
             category: category,
@@ -116,13 +106,14 @@ function UpdateProduct(props) {
             image: image.split(",")[1], 
         }
 
+        console.log(productData);
 
         if (isValidate()) {
-            const updateEndpoint = `/product/update/${productId}`
-            console.log('Product ID', productId)
+            const updateEndpoint = `http://localhost:8080/product/update/${id}`
+            console.log('Product ID', id)
 
-            customAxios
-                .post(updateEndpoint, productData, {
+            axios
+                .put(updateEndpoint, productData, {
                     headers: {
                         Authorization: `Bearer ${auth.accessToken}`
                     }
@@ -137,6 +128,7 @@ function UpdateProduct(props) {
                 });
         }
     }
+
 
     return (
         <div className='container mt-5'>

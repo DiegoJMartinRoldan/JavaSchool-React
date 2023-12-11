@@ -110,6 +110,7 @@ function Statistics() {
         }
       })
       .then((response) => {
+        console.log('Full Response', response);
         const weeklyRevenueResult = response.data;
         setWeeklyRevenue(weeklyRevenueResult);
         console.log('Weekly Revenue', weeklyRevenueResult);
@@ -209,6 +210,7 @@ function Statistics() {
       <table className="statistics-table">
         <thead>
           <tr>
+            <th>Top 10 </th>
             <th>Name</th>
             <th>Surname</th>
             <th>Date of Birth</th>
@@ -216,8 +218,9 @@ function Statistics() {
           </tr>
         </thead>
         <tbody>
-          {topTenClients.map((topTenClient) => (
+          {topTenClients.map((topTenClient, index) => (
             <tr key={topTenClient.id}>
+              <td>{index + 1}</td>
               <td>{topTenClient.name}</td>
               <td>{topTenClient.surname}</td>
               <td>{topTenClient.dateOfBirth}</td>
@@ -232,6 +235,7 @@ function Statistics() {
       <table className="statistics-table">
         <thead>
           <tr>
+            <th>Top 10 </th>
             <th>Title</th>
             <th>Price</th>
             <th>Category</th>
@@ -242,8 +246,9 @@ function Statistics() {
           </tr>
         </thead>
         <tbody>
-          {topTenProducts.map((topTenProduct) => (
+          {topTenProducts.map((topTenProduct, index) => (
             <tr key={topTenProduct.id}>
+              <td>{index + 1}</td>
               <td>{topTenProduct.title}</td>
               <td>{topTenProduct.price}</td>
               <td>{topTenProduct.category}</td>

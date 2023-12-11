@@ -6,18 +6,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import useAuth from '../../authentication/customHooks/useAuth';
 import Context from '../../authentication/customHooks/Auth';
 import useCustomAxios from '../../authentication/customHooks/useCustomAxios';
+import { useContext } from 'react';
+import useRefreshToken from '../../authentication/customHooks/useRefreshToken';
 
 
 
-function UserInformationChange(props){
-  const { auth, updateAuth } = useAuth(Context);
+function UserInformationChange(){
+  const { auth, updateUser } = useAuth(Context);
   const customAxios = useCustomAxios();
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
-  const { handleClientUpdate } = props.location.state;
 
 
   // Define function for displaying success message (Toastify)
@@ -64,15 +65,8 @@ function UserInformationChange(props){
     return isProceed;
   }
   
-  const handleUpdate = (updatedClient) => {
-    if (handleClientUpdate) {
-      console.log('Client state updated:', updatedClient);
-      handleClientUpdate(updatedClient);
-      handleSuccess();
-    }
-  };
 
-
+  
 
   // Function to handle form submission
   const handleSubmit = (event) => {
@@ -89,12 +83,14 @@ function UserInformationChange(props){
     };
 
     console.log('User ID before update:', auth.id);
+    
     // Perform validation before sending the request
     if (IsValidate()) {
       // Api Url
       const endpoint = `/client/update/${auth.id}`;
 
-      
+      let respuesta;  
+
       customAxios
         .patch(endpoint, clientData, {
           headers: {
@@ -102,20 +98,21 @@ function UserInformationChange(props){
           }
         })
         .then((response) => {
+          respuesta = response.data;  // Almacenar la respuesta en la variable
           console.log('Datos actualizados:', response.data);
-          handleUpdate(response.data);
           console.log('User ID after update:', auth.id);
-          
-          if(handleClientUpdate) {
-            handleClientUpdate(response.data); 
-          }
-
+          updateUser(respuesta);
           handleSuccess();
+          console.log('new token', useRefreshToken);
+          setIsUserUpdated(true); // Cambia el estado cuando el usuario se actualiza
         })
         .catch((error) => {
           toast.error('There was an error while updating. Try again.');
           console.error('Error', error);
         });
+
+      // Ahora puedes acceder a `respuesta` fuera del bloque `then`
+      console.log('Respuesta fuera de then:', respuesta);
     }
   };
 

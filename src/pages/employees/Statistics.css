@@ -45,23 +45,29 @@
 .statistics-pagination button:hover {
   background-color: #0056b3;
   border-color: #0056b3;
+
 }
 
 .statistics-monthly-revenue {
   margin-top: 20px;
+
+
 }
 
 .statistics-monthly-revenue form {
   display: flex;
-  flex-wrap: wrap;
-
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
   border: solid 1px;
 }
 
 .statistics-monthly-revenue label {
   margin-bottom: 5px;
-
+  align-items: center;
   
+
+ 
 }
 
 .statistics-monthly-revenue input {
@@ -69,6 +75,8 @@
   padding: 8px;
   margin-bottom: 10px;
   margin-top: 10px;
+  justify-content: center;
+
 
   
 }
@@ -95,6 +103,8 @@
   font-size: 20px;
   color: #333;
   text-align: center;
+
+
 }
 
 .statistics-monthly-revenue span {
@@ -102,6 +112,8 @@
   margin-top: 10px;
   font-size: 18px;
   color: #333;
+
+  
 }
 
 .clients-statistics,
@@ -110,11 +122,15 @@
 .weekly-statistics,
 .monthly-statistics {
   text-align: center;
+
+  
 }
 
 .weekly-statistics{
   border: solid 1px;
   margin-bottom:50px;
+
+  
 }
 
 .weekly-title{
@@ -124,4 +140,6 @@
 .monthly-response{
   text-align: center;
   margin-bottom: 20px;
+
+  
 }

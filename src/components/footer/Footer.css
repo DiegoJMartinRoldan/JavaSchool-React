@@ -6,21 +6,26 @@ body {
   margin: 0;
 
 
+
+
 }
 
 .footer {
   background-color: #333;
   color: white;
-  text-align: center;
+  text-align: center; 
   width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
   margin-top: auto;
+  padding: 22px;
 
-  bottom: 0;
+  border: solid #333 ;
 
 
-  border: solid green;
+
+ 
+
+
+
 }
 
 
