@@ -26,7 +26,7 @@ function UserInformationChange(){
     toast.success('Successful update');
 
     setTimeout(() => {
-      navigate('/profile'); // 1 Second delay
+      navigate('/'); // 1 Second delay
     }, 1000);
   };
   // Acceso a setClient en UserInformationChange

@@ -135,7 +135,7 @@ function UpdateProduct() {
             <ToastContainer />
             <h2>Update</h2>
             <form onSubmit={handleSubmit}>
-                <div className="col-md-6">
+                <div className="col-md-10">
                     <label className="form-label">Title:</label>
                     <input
                         type="text"
@@ -144,7 +144,7 @@ function UpdateProduct() {
                         onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-10">
                     <label className="form-label">Price:</label>
                     <input
                         type="text"
@@ -153,7 +153,7 @@ function UpdateProduct() {
                         onChange={(e) => setPrice(e.target.value)}
                     />
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-10">
                     <label className="form-label">Category:</label>
                     <input
                         type="text"
@@ -162,7 +162,7 @@ function UpdateProduct() {
                         onChange={(e) => setCategory(e.target.value)}
                     />
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-10">
                     <label className="form-label">Parameters:</label>
                     <input
                         type="text"
@@ -171,7 +171,7 @@ function UpdateProduct() {
                         onChange={(e) => setParameters(e.target.value)}
                     />
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-10">
                     <label className="form-label">Weight:</label>
                     <input
                         type="text"
@@ -180,7 +180,7 @@ function UpdateProduct() {
                         onChange={(e) => setWeight(e.target.value)}
                     />
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-10">
                     <label className="form-label">Volume:</label>
                     <input
                         type="text"
@@ -189,7 +189,7 @@ function UpdateProduct() {
                         onChange={(e) => setVolume(e.target.value)}
                     />
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-10">
                     <label className="form-label">Quantity Stock:</label>
                     <input
                         type="text"
@@ -199,7 +199,7 @@ function UpdateProduct() {
                     />
                 </div>
 
-                <div className="col-md-6">
+                <div className="col-md-10">
                     <label className="form-label">Image:</label>
                     <input
                         type="file"

@@ -1,83 +1,83 @@
-/* Estilos para la barra de navegación */
+
 #navbar {
-  position: relative; /* Establece la posición relativa para alinear elementos secundarios */
-  background-color: #333; /* Color de fondo gris oscuro */
-  padding: 10px; /* Espaciado interno en la barra de navegación */
-  display: flex; /* Usa un modelo de caja flexible para alinear elementos secundarios */
-  justify-content: space-between; /* Distribuye el espacio entre los elementos secundarios */
-  align-items: center; /* Centra verticalmente los elementos secundarios */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra ligera para la barra de navegación */
-  z-index: 1000; /* Capa z para controlar la superposición con otros elementos */
+  position: relative; 
+  background-color: #333; 
+  padding: 10px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  z-index: 1000;
 }
 
-/* Estilos para el logotipo en la barra de navegación */
+
 .logo a {
-  color: white; /* Color del texto blanco */
-  font-size: 24px; /* Tamaño de fuente del logotipo */
-  text-decoration: none; /* Sin decoración de texto (subrayado) */
-  font-weight: bold; /* Peso de la fuente en negrita */
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; /* Familia de fuentes */
+  color: white; 
+  font-size: 24px; 
+  text-decoration: none; 
+  font-weight: bold; 
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
 }
 
-/* Estilos para la lista no ordenada (ul) que contiene elementos de menú en la barra de navegación */
+
 .menu {
-  list-style: none; /* Elimina los puntos de la lista */
-  display: flex; /* Usa un modelo de caja flexible para alinear elementos secundarios */
-  margin: 0; /* Elimina el margen predeterminado de la lista */
-  padding: 0; /* Elimina el relleno predeterminado de la lista */
+  list-style: none; 
+  display: flex; 
+  margin: 0; 
+  padding: 0; 
 }
 
-/* Estilos para cada elemento de la lista (li) en la barra de navegación */
+
 .listItem {
-  margin-right: 15px; /* Margen derecho entre elementos de la lista */
+  margin-right: 15px; 
 }
 
-/* Estilos para los enlaces (a) dentro de los elementos de la lista */
+
 .listItem a {
-  color: white; /* Color del texto blanco */
-  text-decoration: none; /* Sin decoración de texto (subrayado) */
-  font-weight: bold; /* Peso de la fuente en negrita */
-  font-size: 16px; /* Tamaño de fuente del enlace */
-  transition: color 0.3s ease; /* Transición suave del color al pasar el mouse */
+  color: white; 
+  text-decoration: none; 
+  font-weight: bold; 
+  font-size: 16px; 
+  transition: color 0.3s ease; 
 }
 
-/* Estilos cuando el mouse está sobre los enlaces */
+
 .listItem a:hover {
-  color: #ffc107; /* Cambia el color al amarillo cuando el mouse está sobre el enlace */
+  color: #ffc107; 
 }
 
-/* Estilos para el ícono de carrito de compras en la barra de navegación */
+
 .shoppingCart {
-  margin-left: auto; /* Mueve el ícono de carrito de compras al extremo derecho */
+  margin-left: auto; 
 }
 
-/* Estilos cuando el mouse está sobre el ícono de carrito de compras */
+
 .shoppingCart:hover {
-  color: #ffc107; /* Cambia el color al amarillo cuando el mouse está sobre el ícono */
+  color: #ffc107; 
 }
 
-/* Estilos para el ícono de carrito de compras en la barra de navegación */
+
 .cart {
-  color: white; /* Color del texto blanco */
-  font-size: 24px; /* Tamaño de fuente del ícono de carrito de compras */
-  transition: color 0.3s ease; /* Transición suave del color al pasar el mouse */
+  color: white; 
+  font-size: 24px; 
+  transition: color 0.3s ease; 
 }
 
-/* Estilos cuando el mouse está sobre el ícono de carrito de compras */
+
 .cart:hover {
-  color: #ffc107; /* Cambia el color al amarillo cuando el mouse está sobre el ícono */
+  color: #ffc107; 
 }
 
-/* Estilos para los enlaces de cierre de sesión en la barra de navegación */
+
 .logout {
-  color: white; /* Color del texto blanco */
-  text-decoration: none; /* Sin decoración de texto (subrayado) */
-  font-weight: bold; /* Peso de la fuente en negrita */
-  font-size: 16px; /* Tamaño de fuente del enlace */
-  transition: color 0.3s ease; /* Transición suave del color al pasar el mouse */
+  color: white; 
+  text-decoration: none; 
+  font-weight: bold;
+  font-size: 16px; 
+  transition: color 0.3s ease; 
 }
 
-/* Estilos cuando el mouse está sobre los enlaces de cierre de sesión */
+
 .logout:hover {
-  color: #ffc107; /* Cambia el color al amarillo cuando el mouse está sobre el enlace */
+  color: #ffc107; 
 }
