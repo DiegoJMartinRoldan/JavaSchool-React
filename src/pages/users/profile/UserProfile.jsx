@@ -140,7 +140,7 @@ function UserProfile() {
               <p><strong>Order Date:</strong> {allOrders.orderDate}</p>
 
               <button onClick={() => navigate(`/reorder/${allOrders.id}`)} className="reorder-p-profile-btn btn">
-                Reorder
+                Repeat Order
               </button>
             </div>
           ))}

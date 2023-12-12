@@ -1,10 +1,38 @@
-FROM node:18-alpine
-WORKDIR /app/react-app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-WORKDIR /app/react-app/dist
+FROM node:18.18.2-alpine
+
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY package.json ./
+COPY package-lock.json ./
+COPY vite.config.js ./
+RUN npm install --silent
+#RUN npm install react-scripts@3.4.1 -g --silent
+
+# add app
+COPY . ./
+
 EXPOSE 5174
-RUN npm install -g http-server
-CMD ["http-server", "-p", "5174", "-a", "0.0.0.0"]
+
+#RUN npm run dev
+CMD ["npm", "run", "dev"]
+
+
+
+#COPY package*.json ./
+
+
+
+
+
+# Copia los archivos estáticos desde la carpeta local "dist"
+#COPY dist ./dist/
+
+
+
+#RUN npm install -g http-server
+
+#WORKDIR /app/react-app/dist
+
+#CMD ["http-server", "-p", "5174", "-a", "0.0.0.0", "--cors"]

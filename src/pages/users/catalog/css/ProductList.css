@@ -16,7 +16,7 @@
 
 .catalog-product-image {
   width: 50%; 
-
+  padding-top: 10px;
   height: 180px; 
   object-fit: cover;
   object-position: center;

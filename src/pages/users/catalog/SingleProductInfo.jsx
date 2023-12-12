@@ -96,7 +96,7 @@ function SingleProductInfo() {
         headers: auth.accessToken ? { Authorization: `Bearer ${auth.accessToken}` } : {},
         withCredentials: true,
       });
-      toast.success('Producto agregado al carrito');
+      toast.success('Added to the cart');
       console.log('Respuesta de agregar al carrito:', response.data);
       console.log(`Agregado al carrito: ${product.title}`);
     } catch (error) {
